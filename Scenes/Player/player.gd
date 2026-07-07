@@ -1,6 +1,9 @@
 extends CharacterBody2D
 
+@export var bullet_scene : PackedScene
+
 signal hit
+signal dead
 
 var screen_size : Vector2
 
@@ -12,6 +15,7 @@ func get_input() -> void:
 
 func take_hit() -> void:
 	emit_signal("hit")
+	emit_signal("dead")
 	queue_free()
 
 func _ready() -> void:
@@ -20,6 +24,7 @@ func _ready() -> void:
 	position = screen_size / 2
 
 func _physics_process(_delta: float) -> void:
+	fire()
 	get_input()
 	move_and_slide()
 	
@@ -38,5 +43,16 @@ func _physics_process(_delta: float) -> void:
 	else:
 		$AnimatedSprite2D.stop()
 		$AnimatedSprite2D.frame = 1
-	
-	
+
+func fire() -> void:
+	if !$FireCD.is_stopped():
+		return
+
+	var bullet = bullet_scene.instantiate()
+	if Input.is_action_just_pressed("lmb"):
+		bullet.position = global_position
+		bullet.direction = (get_global_mouse_position() - global_position).normalized()
+		print("Fired...")
+		$FireCD.start()
+		get_tree().current_scene.add_child(bullet)
+		

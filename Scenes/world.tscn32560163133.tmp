@@ -400,7 +400,7 @@ vertical_alignment = 1
 wait_time = 3.0
 
 [node name="WaveCD2" type="Timer" parent="."]
-wait_time = 1.5
+wait_time = 0.5
 
 [connection signal="dead" from="Player" to="." method="_on_player_dead"]
 [connection signal="a_goblin_died" from="SpawnArea" to="." method="_on_spawn_area_a_goblin_died"]

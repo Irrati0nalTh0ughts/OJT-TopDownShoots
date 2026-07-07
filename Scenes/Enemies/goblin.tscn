@@ -78,6 +78,7 @@ autoplay = "idle"
 frame_progress = 0.287109
 
 [node name="Timer" type="Timer" parent="."]
+wait_time = 1.5
 one_shot = true
 
 [node name="Area2D" type="Area2D" parent="."]
@@ -89,6 +90,10 @@ debug_color = Color(0.788612, 0.400596, 0.426343, 0.42)
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
 
+[node name="Removal" type="Timer" parent="."]
+wait_time = 5.0
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_entered"]
+[connection signal="timeout" from="Removal" to="." method="_on_removal_timeout"]

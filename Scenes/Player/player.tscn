@@ -1,6 +1,7 @@
-[gd_scene load_steps=28 format=3 uid="uid://csevv8lgqg7yj"]
+[gd_scene load_steps=29 format=3 uid="uid://csevv8lgqg7yj"]
 
-[ext_resource type="Script" uid="uid://bgiaya6lh4lcu" path="res://player.gd" id="1_qr1w5"]
+[ext_resource type="Script" uid="uid://bgiaya6lh4lcu" path="res://Scenes/Player/player.gd" id="1_qr1w5"]
+[ext_resource type="PackedScene" uid="uid://cg6u7ty1x5jdp" path="res://Scenes/Entities/bullet/bullet.tscn" id="2_bmb2s"]
 [ext_resource type="Texture2D" uid="uid://coudjeiqhwtph" path="res://assets/player/S/player_S_1.png" id="2_ythyg"]
 [ext_resource type="Texture2D" uid="uid://cch74frjxihh5" path="res://assets/player/E/player_E_0.png" id="3_bmb2s"]
 [ext_resource type="Texture2D" uid="uid://cuqc22yiqcl0w" path="res://assets/player/E/player_E_1.png" id="4_ur3l4"]
@@ -176,11 +177,12 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rblve"]
 size = Vector2(27, 48)
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" groups=["Player"]]
 script = ExtResource("1_qr1w5")
+bullet_scene = ExtResource("2_bmb2s")
 metadata/_edit_group_ = true
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." groups=["Player"]]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_0pk7v")
 animation = &"walk4"
@@ -189,3 +191,7 @@ autoplay = "Idle"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-1.5, 0)
 shape = SubResource("RectangleShape2D_rblve")
+
+[node name="FireCD" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
