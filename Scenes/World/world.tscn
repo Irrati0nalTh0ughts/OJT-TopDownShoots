@@ -1,0 +1,387 @@
+[gd_scene load_steps=20 format=4 uid="uid://4y0e1u36mrax"]
+
+[ext_resource type="Script" uid="uid://d2ep7es0tssar" path="res://Scripts/World/world.gd" id="1_adcqc"]
+[ext_resource type="Texture2D" uid="uid://txysa54jrj7j" path="res://assets/items/heart.png" id="2_fcotr"]
+[ext_resource type="PackedScene" uid="uid://bfoc8yfjtpy36" path="res://Scenes/Spawner/spawn_area.tscn" id="2_ugf0j"]
+[ext_resource type="Texture2D" uid="uid://dpj0bd1ba6sm8" path="res://assets/enemies/goblin/goblin_idle_anim_f0.png" id="3_y0d6x"]
+[ext_resource type="Texture2D" uid="uid://bnd0t5lx6osx3" path="res://assets/misc/Grass.png" id="4_adcqc"]
+[ext_resource type="PackedScene" uid="uid://csevv8lgqg7yj" path="res://Scenes/Player/player.tscn" id="5_0ph6x"]
+[ext_resource type="PackedScene" uid="uid://cchvuhtnjhcrd" path="res://Scenes/Enemies/goblin.tscn" id="6_pvt60"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5v1tr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0fj1v"]
+bg_color = Color(0.740333, 0.563464, 0.339149, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="SystemFont" id="SystemFont_5v1tr"]
+font_weight = 900
+
+[sub_resource type="FontVariation" id="FontVariation_ikia7"]
+base_font = SubResource("SystemFont_5v1tr")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7yui6"]
+bg_color = Color(0, 0, 0, 0.847059)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c5t2i"]
+bg_color = Color(0, 0, 0, 0.313726)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o06y3"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_a02cp"]
+texture = ExtResource("4_adcqc")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+4:1/0 = 0
+5:1/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_go701"]
+sources/0 = SubResource("TileSetAtlasSource_a02cp")
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_go701"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5a7ea"]
+texture = ExtResource("4_adcqc")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+6:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+4:1/0 = 0
+5:1/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_8j60k"]
+physics_layer_0/collision_layer = 2
+physics_layer_0/collision_mask = 0
+physics_layer_0/physics_material = SubResource("PhysicsMaterial_go701")
+sources/0 = SubResource("TileSetAtlasSource_5a7ea")
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_adcqc")
+Spawner = ExtResource("2_ugf0j")
+Player = ExtResource("5_0ph6x")
+Enemy = ExtResource("6_pvt60")
+
+[node name="Player" parent="." instance=ExtResource("5_0ph6x")]
+
+[node name="SpawnArea" parent="." instance=ExtResource("2_ugf0j")]
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="HUD" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PlayerUi" type="Panel" parent="UI/HUD"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.937
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 0.407959
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_5v1tr")
+
+[node name="WaveCount" type="Label" parent="UI/HUD/PlayerUi"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.398438
+anchor_right = 0.601563
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 35
+text = "WAVE: 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="LifeCount" type="Label" parent="UI/HUD/PlayerUi"]
+layout_mode = 0
+offset_left = 50.0
+offset_right = 100.0
+offset_bottom = 50.0
+theme_override_font_sizes/font_size = 35
+text = " X 3"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Heart" type="TextureRect" parent="UI/HUD/PlayerUi"]
+layout_mode = 0
+offset_right = 50.0
+offset_bottom = 50.0
+texture = ExtResource("2_fcotr")
+
+[node name="EnemyCount" type="Label" parent="UI/HUD/PlayerUi"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -50.0
+offset_top = -50.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 35
+text = " X 10"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Goblin" type="TextureRect" parent="UI/HUD/PlayerUi"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -155.0
+offset_top = -77.5
+offset_right = -105.0
+offset_bottom = -27.5
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("3_y0d6x")
+
+[node name="GameOver" type="Panel" parent="UI/HUD"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GameOverPanel" type="Panel" parent="UI/HUD/GameOver"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -175.0
+offset_top = -125.0
+offset_right = 175.0
+offset_bottom = 125.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_0fj1v")
+
+[node name="WaveLabel" type="Label" parent="UI/HUD/GameOver/GameOverPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -109.5
+offset_top = -77.5
+offset_right = 109.5
+offset_bottom = -22.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.760584, 0.193108, 0.308117, 1)
+theme_override_fonts/font = SubResource("FontVariation_ikia7")
+theme_override_font_sizes/font_size = 40
+text = "GAMEOVER"
+
+[node name="RestartBttn" type="Button" parent="UI/HUD/GameOver/GameOverPanel"]
+process_mode = 2
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -92.5
+offset_top = 32.5
+offset_right = 92.5
+offset_bottom = 67.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.760784, 0.192157, 0.309804, 1)
+theme_override_font_sizes/font_size = 25
+theme_override_styles/hover = SubResource("StyleBoxFlat_7yui6")
+theme_override_styles/normal = SubResource("StyleBoxFlat_c5t2i")
+text = "Restart Game"
+
+[node name="HighWaveLabel" type="Label" parent="UI/HUD/GameOver/GameOverPanel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -225.5
+offset_top = -200.0
+offset_right = 225.5
+offset_bottom = -31.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 60
+text = "HIGHEST WAVE:
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="High" type="Panel" parent="UI/HUD"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HighPanel" type="Panel" parent="UI/HUD/High"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -175.0
+offset_top = -125.0
+offset_right = 175.0
+offset_bottom = 125.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_0fj1v")
+
+[node name="WaveLabel" type="Label" parent="UI/HUD/High/HighPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -109.5
+offset_top = -77.5
+offset_right = 109.5
+offset_bottom = -22.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.992157, 0.815686, 0.0901961, 1)
+theme_override_fonts/font = SubResource("FontVariation_ikia7")
+theme_override_font_sizes/font_size = 40
+text = "GAMEOVER"
+
+[node name="RestartBttn" type="Button" parent="UI/HUD/High/HighPanel"]
+process_mode = 2
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -92.5
+offset_top = 32.5
+offset_right = 92.5
+offset_bottom = 67.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.992157, 0.815686, 0.0901961, 1)
+theme_override_font_sizes/font_size = 25
+theme_override_styles/hover = SubResource("StyleBoxFlat_7yui6")
+theme_override_styles/normal = SubResource("StyleBoxFlat_c5t2i")
+text = "Restart Game"
+
+[node name="HighWaveLabel" type="Label" parent="UI/HUD/High/HighPanel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -225.5
+offset_top = -200.0
+offset_right = 225.5
+offset_bottom = -31.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.992157, 0.815686, 0.0901961, 1)
+theme_override_font_sizes/font_size = 60
+text = "HIGHEST WAVE:
+0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NextWave" type="Panel" parent="UI/HUD"]
+visible = false
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_o06y3")
+
+[node name="NextWaveLabel" type="Label" parent="UI/HUD/NextWave"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -302.5
+offset_top = -195.0
+offset_right = 302.5
+offset_bottom = -126.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.784314, 0, 0, 1)
+theme_override_font_sizes/font_size = 50
+text = "!!! Next Wave Incoming !!!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MapLayout" type="Node2D" parent="."]
+
+[node name="Grass" type="TileMapLayer" parent="MapLayout"]
+scale = Vector2(3, 3)
+tile_map_data = PackedByteArray("AAABAAMAAAADAAEAAAABAAwAAAADAAAAAAACAAsAAAAEAAEAAAACAA8AAAAEAAEAAAADAAUAAAAFAAEAAAADAAwAAAAFAAAAAAAEAAsAAAAAAAEAAAAFAAAAAAABAAAAAAAFAAgAAAAEAAEAAAAFAA0AAAABAAEAAAAFAA4AAAABAAEAAAAGAAEAAAACAAEAAAAGAAoAAAABAAAAAAAHAAsAAAADAAEAAAAIAAIAAAAEAAAAAAAIAAQAAAAEAAAAAAAJAAAAAAAFAAAAAAAJAAwAAAAFAAAAAAAKAAIAAAAEAAAAAAALAAkAAAABAAEAAAAMAAUAAAACAAEAAAAMAAgAAAACAAAAAAANAA4AAAADAAAAAAAOAAQAAAADAAEAAAAOAAsAAAAEAAEAAAAAAAAAAAACAAAAAAAAAAEAAAACAAEAAAABAAAAAAACAAEAAAABAAEAAAADAAEAAAACAAAAAAAAAAEAAAACAAEAAAAEAAEAAAADAAAAAAAFAAAAAAADAAEAAAACAAEAAAAEAAAAAAAAAAAAAAAEAAEAAAAAAAEAAAAFAAEAAAABAAEAAAAAAAIAAAAAAAEAAAAAAAMAAAACAAEAAAABAAIAAAAFAAAAAAACAAIAAAAEAAAAAAACAAMAAAABAAEAAAADAAIAAAAFAAAAAAADAAMAAAADAAAAAAAEAAIAAAAAAAAAAAAEAAMAAAAAAAEAAAAFAAIAAAAEAAEAAAAFAAMAAAABAAEAAAAAAAQAAAACAAAAAAAAAAUAAAACAAEAAAABAAQAAAADAAAAAAABAAUAAAADAAEAAAACAAQAAAAFAAAAAAACAAUAAAAEAAAAAAADAAQAAAAFAAAAAAAEAAQAAAAAAAAAAAAEAAUAAAADAAAAAAAFAAQAAAABAAAAAAAFAAUAAAABAAEAAAAAAAYAAAACAAAAAAAAAAcAAAACAAEAAAABAAYAAAADAAAAAAABAAcAAAADAAEAAAACAAYAAAAEAAAAAAACAAcAAAAFAAEAAAADAAYAAAAFAAAAAAADAAcAAAACAAEAAAAEAAYAAAAAAAAAAAAEAAcAAAAAAAEAAAAFAAYAAAABAAAAAAAFAAcAAAABAAEAAAAAAAgAAAACAAAAAAAAAAkAAAACAAEAAAABAAgAAAADAAAAAAABAAkAAAADAAEAAAACAAgAAAAEAAAAAAACAAkAAAAFAAAAAAADAAgAAAAFAAAAAAADAAkAAAAFAAEAAAAEAAgAAAAAAAAAAAAEAAkAAAAAAAEAAAAFAAkAAAABAAEAAAAAAAoAAAACAAAAAAAAAAsAAAAAAAEAAAABAAoAAAADAAAAAAABAAsAAAADAAEAAAACAAoAAAADAAEAAAADAAoAAAAFAAEAAAADAAsAAAAAAAEAAAAEAAoAAAADAAAAAAAFAAoAAAAFAAEAAAAFAAsAAAAEAAAAAAAAAAwAAAACAAAAAAAAAA0AAAACAAEAAAABAA0AAAADAAEAAAACAAwAAAAEAAAAAAACAA0AAAAEAAEAAAADAA0AAAAFAAEAAAAEAAwAAAACAAAAAAAEAA0AAAAAAAEAAAAFAAwAAAABAAAAAAAAAA4AAAACAAAAAAAAAA8AAAACAAEAAAABAA4AAAAEAAAAAAABAA8AAAAEAAAAAAACAA4AAAABAAEAAAADAA4AAAAFAAAAAAADAA8AAAAFAAEAAAAEAA4AAAAAAAAAAAAEAA8AAAAAAAEAAAAFAA8AAAAFAAAAAAAGAAAAAAACAAAAAAAHAAAAAAADAAAAAAAHAAEAAAAAAAEAAAAIAAAAAAAEAAAAAAAIAAEAAAAEAAEAAAAJAAEAAAAFAAEAAAAKAAAAAAAAAAAAAAAKAAEAAAAAAAEAAAALAAAAAAABAAAAAAALAAEAAAABAAEAAAAGAAIAAAABAAEAAAAGAAMAAAACAAEAAAAHAAIAAAADAAAAAAAHAAMAAAADAAEAAAAIAAMAAAAEAAEAAAAJAAIAAAAEAAAAAAAJAAMAAAAAAAEAAAAKAAMAAAAAAAEAAAALAAIAAAABAAAAAAALAAMAAAABAAEAAAAGAAQAAAACAAAAAAAGAAUAAAACAAEAAAAHAAQAAAADAAAAAAAHAAUAAAADAAEAAAAIAAUAAAAEAAEAAAAJAAQAAAAFAAAAAAAJAAUAAAAFAAEAAAAKAAQAAAAAAAAAAAAKAAUAAAAAAAEAAAALAAQAAAABAAAAAAALAAUAAAABAAEAAAAGAAYAAAACAAAAAAAGAAcAAAAEAAAAAAAHAAYAAAADAAAAAAAHAAcAAAADAAEAAAAIAAYAAAAEAAAAAAAIAAcAAAAEAAEAAAAJAAYAAAAFAAAAAAAJAAcAAAAFAAEAAAAKAAYAAAAAAAAAAAAKAAcAAAAAAAEAAAALAAYAAAABAAAAAAALAAcAAAABAAEAAAAGAAgAAAACAAAAAAAGAAkAAAAFAAAAAAAHAAgAAAADAAAAAAAHAAkAAAADAAEAAAAIAAgAAAAEAAAAAAAIAAkAAAAEAAEAAAAJAAgAAAACAAAAAAAJAAkAAAAFAAEAAAAKAAgAAAAAAAAAAAAKAAkAAAAAAAEAAAALAAgAAAABAAAAAAAGAAsAAAACAAEAAAAHAAoAAAAEAAEAAAAIAAoAAAAEAAAAAAAIAAsAAAAAAAEAAAAJAAoAAAAFAAAAAAAJAAsAAAAFAAEAAAAKAAoAAAAAAAAAAAAKAAsAAAAAAAEAAAALAAoAAAABAAAAAAALAAsAAAABAAEAAAAGAAwAAAACAAAAAAAGAA0AAAABAAAAAAAHAAwAAAAFAAAAAAAHAA0AAAAEAAAAAAAIAAwAAAAEAAAAAAAIAA0AAAAEAAEAAAAJAA0AAAAFAAEAAAAKAAwAAAAAAAAAAAAKAA0AAAAFAAEAAAALAAwAAAABAAAAAAALAA0AAAABAAEAAAAGAA4AAAACAAAAAAAGAA8AAAACAAEAAAAHAA4AAAAFAAAAAAAHAA8AAAADAAEAAAAIAA4AAAAEAAAAAAAIAA8AAAAEAAEAAAAJAA4AAAAFAAAAAAAJAA8AAAAFAAEAAAAKAA4AAAADAAEAAAAKAA8AAAAAAAEAAAALAA4AAAABAAAAAAALAA8AAAACAAEAAAAMAAAAAAACAAAAAAAMAAEAAAACAAEAAAANAAAAAAADAAAAAAANAAEAAAADAAEAAAAOAAAAAAAEAAAAAAAOAAEAAAAEAAEAAAAPAAAAAAABAAAAAAAPAAEAAAAFAAEAAAAMAAIAAAACAAAAAAAMAAMAAAAEAAEAAAANAAIAAAADAAAAAAANAAMAAAADAAEAAAAOAAIAAAAEAAAAAAAOAAMAAAAEAAEAAAAPAAIAAAAFAAAAAAAPAAMAAAAFAAEAAAAMAAQAAAACAAAAAAANAAQAAAAFAAEAAAANAAUAAAADAAEAAAAOAAUAAAAFAAEAAAAPAAQAAAAFAAAAAAAPAAUAAAAAAAEAAAAMAAYAAAACAAAAAAAMAAcAAAACAAEAAAANAAYAAAADAAAAAAANAAcAAAADAAEAAAAOAAYAAAAEAAAAAAAOAAcAAAAEAAAAAAAPAAYAAAAFAAAAAAAPAAcAAAABAAEAAAAMAAkAAAACAAEAAAANAAgAAAADAAAAAAANAAkAAAAAAAAAAAAOAAgAAAAEAAAAAAAOAAkAAAABAAEAAAAPAAgAAAADAAEAAAAPAAkAAAAFAAEAAAAMAAoAAAACAAAAAAAMAAsAAAACAAEAAAANAAoAAAADAAAAAAANAAsAAAADAAEAAAAOAAoAAAACAAEAAAAPAAoAAAADAAEAAAAPAAsAAAAFAAEAAAAMAAwAAAACAAAAAAAMAA0AAAACAAEAAAANAAwAAAADAAAAAAANAA0AAAAAAAEAAAAOAAwAAAAEAAAAAAAOAA0AAAAEAAEAAAAPAAwAAAAAAAAAAAAPAA0AAAAFAAEAAAAMAA4AAAACAAAAAAAMAA8AAAACAAEAAAANAA8AAAADAAEAAAAOAA4AAAABAAEAAAAOAA8AAAAEAAEAAAAPAA4AAAAFAAEAAAAPAA8AAAAFAAEAAAA=")
+tile_set = SubResource("TileSet_go701")
+collision_enabled = false
+
+[node name="Bush" type="TileMapLayer" parent="MapLayout" groups=["wall"]]
+scale = Vector2(3, 3)
+tile_map_data = PackedByteArray("AAAAAAAAAAAGAAAAAAAAAAEAAAAGAAAAAAAAAAIAAAAGAAAAAAAAAAMAAAAGAAAAAAAAAAQAAAAGAAAAAAABAAAAAAAGAAAAAAACAAAAAAAGAAAAAAADAAAAAAAGAAAAAAAEAAAAAAAGAAAAAAAFAAAAAAAGAAAAAAAAAAUAAAAGAAAAAAAAAAoAAAAGAAAAAAAAAAsAAAAGAAAAAAAAAAwAAAAGAAAAAAAAAA0AAAAGAAAAAAAAAA4AAAAGAAAAAAAAAA8AAAAGAAAAAAABAA8AAAAGAAAAAAACAA8AAAAGAAAAAAADAA8AAAAGAAAAAAAEAA8AAAAGAAAAAAAFAA8AAAAGAAAAAAAKAA8AAAAGAAAAAAALAA8AAAAGAAAAAAAMAA8AAAAGAAAAAAANAA8AAAAGAAAAAAAOAA8AAAAGAAAAAAAPAA8AAAAGAAAAAAAPAA4AAAAGAAAAAAAPAA0AAAAGAAAAAAAPAAwAAAAGAAAAAAAPAAsAAAAGAAAAAAAPAAoAAAAGAAAAAAAPAAUAAAAGAAAAAAAPAAQAAAAGAAAAAAAPAAMAAAAGAAAAAAAPAAIAAAAGAAAAAAAPAAEAAAAGAAAAAAAPAAAAAAAGAAAAAAAOAAAAAAAGAAAAAAANAAAAAAAGAAAAAAAMAAAAAAAGAAAAAAALAAAAAAAGAAAAAAAKAAAAAAAGAAAAAAA=")
+tile_set = SubResource("TileSet_8j60k")
+
+[node name="WaveCD" type="Timer" parent="."]
+wait_time = 3.0
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(386, 392)
+enabled = false
+zoom = Vector2(0.8, 0.8)
+
+[connection signal="i_got_hit" from="Player" to="." method="_on_player_i_got_hit"]
+[connection signal="a_goblin_died" from="SpawnArea" to="." method="_on_spawn_area_a_goblin_died"]
+[connection signal="pressed" from="UI/HUD/GameOver/GameOverPanel/RestartBttn" to="." method="_on_restart_bttn_pressed"]
+[connection signal="pressed" from="UI/HUD/High/HighPanel/RestartBttn" to="." method="_on_restart_bttn_pressed"]
+[connection signal="timeout" from="WaveCD" to="." method="_on_wave_cd_timeout"]
