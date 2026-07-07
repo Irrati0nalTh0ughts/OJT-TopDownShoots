@@ -180,7 +180,7 @@ size = Vector2(27, 48)
 script = ExtResource("1_qr1w5")
 metadata/_edit_group_ = true
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." groups=["Player"]]
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_0pk7v")
 animation = &"walk4"

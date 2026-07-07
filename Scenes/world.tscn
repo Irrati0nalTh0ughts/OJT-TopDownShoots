@@ -1,5 +1,6 @@
-[gd_scene load_steps=9 format=4 uid="uid://c4n1m4sm3u5io"]
+[gd_scene load_steps=10 format=4 uid="uid://c4n1m4sm3u5io"]
 
+[ext_resource type="Script" uid="uid://8yqybybyhvhq" path="res://Scenes/world.gd" id="1_8j60k"]
 [ext_resource type="Texture2D" uid="uid://bnd0t5lx6osx3" path="res://assets/Grass.png" id="1_a02cp"]
 [ext_resource type="PackedScene" uid="uid://csevv8lgqg7yj" path="res://Scenes/Player/player.tscn" id="2_go701"]
 [ext_resource type="PackedScene" uid="uid://bfoc8yfjtpy36" path="res://Scenes/Entities/spawn_area.tscn" id="3_5a7ea"]
@@ -48,6 +49,7 @@ physics_layer_0/physics_material = SubResource("PhysicsMaterial_go701")
 sources/0 = SubResource("TileSetAtlasSource_5a7ea")
 
 [node name="World" type="Node2D"]
+script = ExtResource("1_8j60k")
 
 [node name="Grass" type="TileMapLayer" parent="."]
 scale = Vector2(3, 3)

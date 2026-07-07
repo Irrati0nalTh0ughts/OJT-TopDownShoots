@@ -53,7 +53,7 @@ position = Vector2(800, 350)
 [node name="Marker2D4_4" type="Marker2D" parent="."]
 position = Vector2(800, 305)
 
-[node name="Timer" type="Timer" parent="." groups=["enemies"]]
+[node name="Timer" type="Timer" parent="."]
 wait_time = 0.5
 autostart = true
 

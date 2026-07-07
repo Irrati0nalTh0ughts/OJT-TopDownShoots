@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+signal hit
+
 var screen_size : Vector2
 
 @export var speed : int = 250
@@ -8,11 +10,16 @@ func get_input() -> void:
 	var input_dir = Input.get_vector("left", "right", "up", "down")
 	velocity = input_dir.normalized() * speed
 
+func take_hit() -> void:
+	emit_signal("hit")
+	queue_free()
+
 func _ready() -> void:
+	add_to_group("Player")
 	screen_size = get_viewport_rect().size
 	position = screen_size / 2
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	get_input()
 	move_and_slide()
 	
@@ -31,3 +38,5 @@ func _physics_process(delta: float) -> void:
 	else:
 		$AnimatedSprite2D.stop()
 		$AnimatedSprite2D.frame = 1
+	
+	
