@@ -1,12 +1,18 @@
 extends CharacterBody2D
 
-@export var bullet_scene : PackedScene
-
 signal i_got_hit(dmg: int)
 
-var screen_size : Vector2
+@export var bullet_scene : PackedScene
 
-@export var speed : int = 250
+var base_speed: int = 250
+var speed_bonus: int = 0
+
+var speed: int:
+	get:
+		return base_speed + speed_bonus
+
+var gun_buff_active: bool = false
+var screen_size : Vector2
 
 func took_a_hit(damage: int) -> void:
 	i_got_hit.emit(damage)
@@ -19,14 +25,39 @@ func get_input() -> void:
 func fire() -> void:
 	if !$FireCD.is_stopped():
 		return
-
-	var bullet = bullet_scene.instantiate()
-	if Input.is_action_just_pressed("lmb"):
-		bullet.position = global_position
-		bullet.direction = (get_global_mouse_position() - global_position).normalized()
-		print("Fired...")
+	
+	if Input.is_action_pressed("lmb"):
+		var base_direction = (get_global_mouse_position() - global_position).normalized()
+		
+		if gun_buff_active:
+			spawn_bullet(base_direction)
+			spawn_bullet(base_direction.rotated(-PI / 4))
+			spawn_bullet(base_direction.rotated(PI / 4))
+		else:
+			spawn_bullet(base_direction)
+		
 		$FireCD.start()
-		get_tree().current_scene.add_child(bullet)
+
+func apply_coffee_buff(effect_amount: int, effect_duration: float) -> void:
+	speed_bonus = effect_amount
+	
+	$Coffee_Duration.wait_time = effect_duration
+	$Coffee_Duration.start()
+
+func apply_gun_buff(_effect_amount: int, effect_duration: float) -> void:
+	gun_buff_active = true
+
+	$Gun_Duration.wait_time = effect_duration
+	$Gun_Duration.start()
+
+func spawn_bullet(direction: Vector2) -> void:
+	var bullet = bullet_scene.instantiate()
+	
+	bullet.global_position = global_position
+	bullet.direction = direction
+	bullet.rotation = direction.angle()
+	
+	get_parent().add_child(bullet)
 
 func _ready() -> void:
 	add_to_group("Player")
@@ -53,3 +84,11 @@ func _physics_process(_delta: float) -> void:
 	else:
 		$AnimatedSprite2D.stop()
 		$AnimatedSprite2D.frame = 1
+
+
+func _on_gun_duration_timeout() -> void:
+	gun_buff_active = false
+
+
+func _on_coffee_duration_timeout() -> void:
+	speed_bonus = 0

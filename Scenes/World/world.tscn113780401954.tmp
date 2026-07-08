@@ -78,7 +78,7 @@ physics_layer_0/collision_mask = 0
 physics_layer_0/physics_material = SubResource("PhysicsMaterial_go701")
 sources/0 = SubResource("TileSetAtlasSource_5a7ea")
 
-[node name="World" type="Node2D" groups=["World"]]
+[node name="World" type="Node2D"]
 script = ExtResource("1_adcqc")
 Spawner = ExtResource("2_ugf0j")
 Player = ExtResource("5_0ph6x")

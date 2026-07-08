@@ -5,8 +5,7 @@ class_name CollectibleData
 enum CollectibleType {
 	LIFE_BOX,
 	COFFEE_BOX,
-	GUNMOD_BOX,
-	NOTHING
+	GUNMOD_BOX
 }
 
 @export var collectibles_type: CollectibleType

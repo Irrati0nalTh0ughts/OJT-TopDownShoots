@@ -1,6 +1,7 @@
 extends Node2D
 
 signal a_goblin_died
+signal a_goblin_was_there
 
 var goblin_scene : PackedScene = preload("res://Scenes/Enemies/goblin.tscn")
 
@@ -21,12 +22,15 @@ func _on_timer_timeout() -> void:
 	
 	goblin.position = spawn.position
 	goblin.i_died.connect(_on_goblin_death)
+	goblin.i_was_here.connect(_a_goblin_was_there)
 	get_tree().current_scene.add_child(goblin)
 	get_parent().enemies_spawned_this_wave += 1
 	get_parent().Update_UI()
-	
-#func spawner()
 
 func _on_goblin_death() -> void:
 	emit_signal("a_goblin_died")
-	print("g_died")
+
+func _a_goblin_was_there(gob_finalpos: Vector2, itemref: CollectibleData) -> void:
+	a_goblin_was_there.emit(gob_finalpos, itemref)
+	#print(gob_finalpos)
+	print(itemref)

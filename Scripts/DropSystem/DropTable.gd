@@ -23,4 +23,4 @@ func DropRNG():
 		current_weight += entry_list[i].weight
 		
 		if roll <= current_weight:
-			return entry_list[i]
+			return entry_list[i].ItemData

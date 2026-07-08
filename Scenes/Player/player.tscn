@@ -179,7 +179,7 @@ size = Vector2(18, 42)
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 z_index = 1
-collision_mask = 7
+collision_mask = 15
 script = ExtResource("1_qr1w5")
 bullet_scene = ExtResource("2_bmb2s")
 metadata/_edit_group_ = true
@@ -197,3 +197,10 @@ shape = SubResource("RectangleShape2D_rblve")
 [node name="FireCD" type="Timer" parent="."]
 wait_time = 0.2
 one_shot = true
+
+[node name="Coffee_Duration" type="Timer" parent="."]
+
+[node name="Gun_Duration" type="Timer" parent="."]
+
+[connection signal="timeout" from="Coffee_Duration" to="." method="_on_coffee_duration_timeout"]
+[connection signal="timeout" from="Gun_Duration" to="." method="_on_gun_duration_timeout"]

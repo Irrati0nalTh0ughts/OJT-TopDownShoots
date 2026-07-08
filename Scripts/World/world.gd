@@ -82,7 +82,6 @@ func _on_wave_cd_timeout() -> void:
 func _on_player_i_got_hit(damage: int) -> void:
 	var player = get_tree().get_first_node_in_group("Player")
 	lives -= damage
-	print("Removed", damage, " life")
 	var screen_size : Vector2 = get_viewport_rect().size
 	player.position = screen_size / 2
 	await get_tree().process_frame

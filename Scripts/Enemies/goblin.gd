@@ -2,10 +2,14 @@ extends CharacterBody2D
 
 signal i_died
 
+signal i_was_here
+
 enum GoblinState { ENTERING, IDLE_WAIT, CHASING, DEAD }
 
 @onready var player : CharacterBody2D = get_tree().get_first_node_in_group("Player")
 @onready var state : GoblinState = GoblinState.ENTERING
+
+@export var droptable : DropTable
 
 var damage : int = 1
 var speed : int
@@ -22,7 +26,8 @@ func dead() -> void:
 	$TimerToIdle.stop()
 	$MoveTowardTimer.stop()
 
-	emit_signal("i_died")
+	i_died.emit()
+	i_was_here.emit(global_position, droptable.DropRNG())
 	remove_from_group("enemies")
 	$AnimatedSprite2D.play("dead")
 	$Removal.start()

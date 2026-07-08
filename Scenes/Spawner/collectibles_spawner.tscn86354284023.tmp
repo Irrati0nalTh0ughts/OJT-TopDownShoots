@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://bdfxtr7lis6lg"]
+
+[ext_resource type="Script" uid="uid://duabolxks2gy2" path="res://Scripts/Spawners/collectibles_spawner.gd" id="1_a37e2"]
+[ext_resource type="Resource" uid="uid://dn2bpqk04lscb" path="res://Resources/Drop/goblin_drop_table.tres" id="2_mn8oc"]
+[ext_resource type="PackedScene" uid="uid://cchvuhtnjhcrd" path="res://Scenes/Enemies/goblin.tscn" id="3_yqoub"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a37e2"]
+size = Vector2(765, 815)
+
+[node name="collectibles_spawner" type="Area2D"]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("1_a37e2")
+drop_table = ExtResource("2_mn8oc")
+metadata/_edit_group_ = true
+
+[node name="Marker2D" type="Marker2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(383.5, 407.5)
+shape = SubResource("RectangleShape2D_a37e2")
+
+[node name="Goblin" parent="." instance=ExtResource("3_yqoub")]
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
