@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="DataEntry" load_steps=3 format=3 uid="uid://boeh7p60lll6u"]
+
+[ext_resource type="Resource" uid="uid://dbdyg5kwxld54" path="res://Resources/Collectibles/coffee_box.tres" id="1_x1mbd"]
+[ext_resource type="Script" uid="uid://c571moc2g8bow" path="res://Scripts/DropSystem/DropEntry.gd" id="2_aajwi"]
+
+[resource]
+script = ExtResource("2_aajwi")
+ItemData = ExtResource("1_x1mbd")
+weight = 20

@@ -1,8 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://bdfxtr7lis6lg"]
+[gd_scene load_steps=2 format=3 uid="uid://bdfxtr7lis6lg"]
 
 [ext_resource type="Script" uid="uid://duabolxks2gy2" path="res://Scripts/Spawners/collectibles_spawner.gd" id="1_a37e2"]
-[ext_resource type="PackedScene" uid="uid://cchvuhtnjhcrd" path="res://Scenes/Enemies/goblin.tscn" id="2_mn8oc"]
 
 [node name="collectibles_spawner" type="Node2D"]
 script = ExtResource("1_a37e2")
-Gobline_Scene = ExtResource("2_mn8oc")

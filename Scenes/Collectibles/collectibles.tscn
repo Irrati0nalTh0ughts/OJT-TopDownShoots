@@ -1,14 +1,22 @@
-[gd_scene load_steps=4 format=3 uid="uid://cetx42o6l2n28"]
+[gd_scene load_steps=5 format=3 uid="uid://cetx42o6l2n28"]
 
 [ext_resource type="Script" uid="uid://c7w01lwk2yub7" path="res://Scripts/Collectibles/collectibles.gd" id="1_xa70s"]
-[ext_resource type="Resource" uid="uid://bm2ekrgpgwjg3" path="res://Resources/Collectibles/gunmod_box.tres" id="2_g2nd1"]
+[ext_resource type="Script" uid="uid://bo565x2qknyjf" path="res://Scripts/Collectibles/cellectiblesdata.gd" id="2_mbqq1"]
+
+[sub_resource type="Resource" id="Resource_0v740"]
+script = ExtResource("2_mbqq1")
+collectibles_type = 3
+lifetime = 0.0
+effect_amount = 0
+effect_duration = 0.0
+metadata/_custom_type_script = "uid://bo565x2qknyjf"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g2nd1"]
 size = Vector2(26, 26)
 
 [node name="Collectibles" type="Area2D"]
 script = ExtResource("1_xa70s")
-data = ExtResource("2_g2nd1")
+data = SubResource("Resource_0v740")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

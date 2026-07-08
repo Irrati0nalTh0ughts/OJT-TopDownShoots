@@ -1,12 +1,6 @@
 extends Node
 
-@export var Gobline_Scene : PackedScene 
-
-@export var data : CollectibleData
+@export var drop_table : DropTable
 
 func _ready() -> void:
-	pass
-
-
-func _on_spawn_area_a_goblin_died() -> void:
-	
+	print(drop_table.DropRNG())
