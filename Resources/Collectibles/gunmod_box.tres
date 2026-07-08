@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="CollectibleData" load_steps=3 format=3 uid="uid://bm2ekrgpgwjg3"]
+
+[ext_resource type="Script" uid="uid://bo565x2qknyjf" path="res://Scripts/Collectibles/cellectiblesdata.gd" id="1_ghqlt"]
+[ext_resource type="Texture2D" uid="uid://bqxh6budjvbjy" path="res://assets/items/gun_box.png" id="2_axo6n"]
+
+[resource]
+script = ExtResource("1_ghqlt")
+collectibles_type = 0
+lifetime = 0.0
+effect_amount = 0
+effect_duration = 0.0
+texture = ExtResource("2_axo6n")
+metadata/_custom_type_script = "uid://bo565x2qknyjf"

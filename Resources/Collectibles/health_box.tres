@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="CollectibleData" load_steps=3 format=3 uid="uid://d0i6o360oh4n8"]
+
+[ext_resource type="Script" uid="uid://bo565x2qknyjf" path="res://Scripts/Collectibles/cellectiblesdata.gd" id="1_qhhkj"]
+[ext_resource type="Texture2D" uid="uid://cwodfdjir68jt" path="res://assets/items/health_box.png" id="2_bmh7u"]
+
+[resource]
+script = ExtResource("1_qhhkj")
+collectibles_type = 0
+lifetime = 7.0
+effect_amount = 1
+effect_duration = 0.0
+texture = ExtResource("2_bmh7u")
+metadata/_custom_type_script = "uid://bo565x2qknyjf"

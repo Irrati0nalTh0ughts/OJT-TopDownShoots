@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="CollectibleData" load_steps=3 format=3 uid="uid://dbdyg5kwxld54"]
+
+[ext_resource type="Script" uid="uid://bo565x2qknyjf" path="res://Scripts/Collectibles/cellectiblesdata.gd" id="1_spvag"]
+[ext_resource type="Texture2D" uid="uid://bb0c087hybs6g" path="res://assets/items/coffee_box.png" id="2_yccw0"]
+
+[resource]
+script = ExtResource("1_spvag")
+collectibles_type = 1
+lifetime = 10.0
+effect_amount = 100
+effect_duration = 15.0
+texture = ExtResource("2_yccw0")
+metadata/_custom_type_script = "uid://bo565x2qknyjf"

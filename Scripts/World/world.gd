@@ -70,8 +70,8 @@ func _on_spawn_area_a_goblin_died() -> void:
 	and enemies_spawned_this_wave >= enemies_to_spawn_this_wave:
 		current_wave += 1
 		$UI/HUD/NextWave.visible = true
-		$WaveCD2.start()
-		await $WaveCD2.timeout
+		$WaveCD.start()
+		await $WaveCD.timeout
 		Start_Wave()
 
 
