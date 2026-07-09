@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=4 uid="uid://4y0e1u36mrax"]
+[gd_scene load_steps=21 format=4 uid="uid://4y0e1u36mrax"]
 
 [ext_resource type="Script" uid="uid://d2ep7es0tssar" path="res://Scripts/World/world.gd" id="1_adcqc"]
 [ext_resource type="Texture2D" uid="uid://txysa54jrj7j" path="res://assets/items/heart.png" id="2_fcotr"]
@@ -7,7 +7,6 @@
 [ext_resource type="Texture2D" uid="uid://bnd0t5lx6osx3" path="res://assets/misc/Grass.png" id="4_adcqc"]
 [ext_resource type="PackedScene" uid="uid://csevv8lgqg7yj" path="res://Scenes/Player/player.tscn" id="5_0ph6x"]
 [ext_resource type="PackedScene" uid="uid://cetx42o6l2n28" path="res://Scenes/Collectibles/collectibles.tscn" id="5_fcotr"]
-[ext_resource type="PackedScene" uid="uid://cchvuhtnjhcrd" path="res://Scenes/Enemies/goblin.tscn" id="6_pvt60"]
 [ext_resource type="PackedScene" uid="uid://bdfxtr7lis6lg" path="res://Scenes/Spawner/collectibles_spawner.tscn" id="6_y0d6x"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5v1tr"]
@@ -21,6 +20,7 @@ corner_radius_bottom_left = 10
 
 [sub_resource type="SystemFont" id="SystemFont_5v1tr"]
 font_weight = 900
+subpixel_positioning = 0
 
 [sub_resource type="FontVariation" id="FontVariation_ikia7"]
 base_font = SubResource("SystemFont_5v1tr")
@@ -80,9 +80,6 @@ sources/0 = SubResource("TileSetAtlasSource_5a7ea")
 
 [node name="World" type="Node2D" groups=["World"]]
 script = ExtResource("1_adcqc")
-Spawner = ExtResource("2_ugf0j")
-Player = ExtResource("5_0ph6x")
-Enemy = ExtResource("6_pvt60")
 
 [node name="Player" parent="." instance=ExtResource("5_0ph6x")]
 

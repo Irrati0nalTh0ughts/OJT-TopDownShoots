@@ -1,14 +1,15 @@
 extends CharacterBody2D
 
 signal i_died
-
 signal i_was_here
 
 enum GoblinState { ENTERING, IDLE_WAIT, CHASING, DEAD }
 
-@onready var player : CharacterBody2D = get_tree().get_first_node_in_group("Player")
+# Meaning the first class/scene inside that Group. IMO Good for use only when there is only 1 Node inside.
+@onready var player : CharacterBody2D = get_tree().get_first_node_in_group("Player") 
 @onready var state : GoblinState = GoblinState.ENTERING
 
+# Referenced DropTable so that I can get the output of the function inside it DropRNG()
 @export var droptable : DropTable
 
 var damage : int = 1
@@ -16,7 +17,7 @@ var speed : int
 
 var direction : Vector2
 
-# connected to bullet
+# Connected to Bullet.tscn VIA has_method("dead") for check and assuming it checks, you can call "body.dead()"
 func dead() -> void:
 	if state == GoblinState.DEAD:
 		return
@@ -27,14 +28,16 @@ func dead() -> void:
 	$MoveTowardTimer.stop()
 
 	i_died.emit()
+	# Emits its final position and RNG output to listeners
 	i_was_here.emit(global_position, droptable.DropRNG())
+	# Removes itself from group so counter doesn't count dead goblins as well
 	remove_from_group("enemies")
 	$AnimatedSprite2D.play("dead")
 	$Removal.start()
 	collision_layer = 0
 	collision_mask = 0
 
-# Move after Spawn
+# Moves into player screen rect after Spawn
 func initial_entry() -> void:
 	# Won't move to center if TimerToIdle is working, Player is nonexistent and Goblin not alive
 	if !is_instance_valid(player) and state == GoblinState.DEAD:
@@ -48,7 +51,7 @@ func initial_entry() -> void:
 		flip()
 		move_and_slide()
 
-# Move after Idle
+# Moves after Idle, in acting a goblin seeing the player
 func move_to_target() -> void:
 	if !is_instance_valid(player):
 		return
@@ -61,6 +64,7 @@ func move_to_target() -> void:
 	flip()
 	move_and_slide()
 
+# Flips Sprite
 func flip() -> void:
 	if velocity.x != 0:
 		if velocity.x < -0.1:
@@ -71,6 +75,7 @@ func flip() -> void:
 func _ready() -> void:
 	add_to_group("enemies")
 
+# GOBLIN STATE MACHINE
 func _physics_process(_delta: float) -> void:
 	if state == GoblinState.DEAD:
 		return
@@ -84,7 +89,8 @@ func _physics_process(_delta: float) -> void:
 		GoblinState.CHASING:
 			move_to_target()
 
-func _on_area_2d_body_entered(_body: Node2D) -> void:
+
+func _on_player_area_body_entered(_body: Node2D) -> void:
 	if state == GoblinState.DEAD:
 		return
 
@@ -96,9 +102,6 @@ func _on_visible_on_screen_notifier_2d_screen_entered() -> void:
 	if state == GoblinState.ENTERING:
 		$TimerToIdle.start()
 
-# Erases goblin in scene tree after Timeout
-func _on_removal_timeout() -> void:
-	queue_free()
 
 # Start when Goblin is seen within Screen Rect
 func _on_timer_to_idle_timeout() -> void:
@@ -108,7 +111,13 @@ func _on_timer_to_idle_timeout() -> void:
 	$MoveTowardTimer.start()
 	#print("arrived...")
 
+
 # After IdleTimer
 func _on_move_toward_timer_timeout() -> void:
 	state = GoblinState.CHASING
 	#print("old spawn")
+
+
+# Erases goblin in scene tree after Timeout
+func _on_removal_timeout() -> void:
+	queue_free()

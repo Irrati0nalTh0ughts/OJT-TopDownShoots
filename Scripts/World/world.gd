@@ -1,17 +1,8 @@
 extends Node2D
 
-@export_category("PackedScenes")
-@export var Spawner : PackedScene
-@export var Player : PackedScene
-@export var Enemy : PackedScene
-
 @export_category("Stat")
 @export var max_spawn : int = 5
 @export var lives : int = 3
-
-enum GameState { PLAYING, GAME_OVER, NEW_HIGH }
-
-@onready var game_state : GameState = GameState.PLAYING
 
 var current_wave : int
 var current_lives : int
@@ -19,7 +10,9 @@ var current_goblins : int
 
 var enemies_to_spawn_this_wave: int
 var enemies_spawned_this_wave: int
-var enemies_alive: int
+
+enum GameState { PLAYING, GAME_OVER, NEW_HIGH }
+@onready var game_state : GameState = GameState.PLAYING
 
 func Start_Wave() -> void:
 	$UI/HUD/High.visible = false
@@ -27,6 +20,7 @@ func Start_Wave() -> void:
 	
 	enemies_spawned_this_wave = 0
 	enemies_to_spawn_this_wave = current_wave * max_spawn
+	await get_tree().process_frame
 	Update_UI()
 
 func Update_UI() -> void:
@@ -54,7 +48,6 @@ func _ready() -> void:
 	$MapLayout/Bush.add_to_group("wall")
 
 	current_wave = 1
-
 	Start_Wave()
 
 func _on_restart_bttn_pressed() -> void:

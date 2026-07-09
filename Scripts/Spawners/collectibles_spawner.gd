@@ -2,8 +2,7 @@ extends Node2D
 
 @export var Collectible_Scene: PackedScene
 
-#func _ready() -> void:
-
+# Reference came from sibling node Enemy Spawner
 func _on_spawn_area_a_goblin_was_there(goblin_finalpos: Vector2, collectible_ref: CollectibleData) -> void:
 	
 	var collectible = Collectible_Scene.instantiate()
@@ -14,4 +13,5 @@ func _on_spawn_area_a_goblin_was_there(goblin_finalpos: Vector2, collectible_ref
 	collectible.global_position = goblin_finalpos
 	collectible.data = collectible_ref
 	
-	get_parent().add_child(collectible)
+	var World : Node2D = get_tree().current_scene
+	World.add_child(collectible)

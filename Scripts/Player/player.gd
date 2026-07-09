@@ -18,26 +18,6 @@ func took_a_hit(damage: int) -> void:
 	i_got_hit.emit(damage)
 	print("player got hit")
 
-func get_input() -> void:
-	var input_dir = Input.get_vector("left", "right", "up", "down")
-	velocity = input_dir.normalized() * speed
-
-func fire() -> void:
-	if !$FireCD.is_stopped():
-		return
-	
-	if Input.is_action_pressed("lmb"):
-		var base_direction = (get_global_mouse_position() - global_position).normalized()
-		
-		if gun_buff_active:
-			spawn_bullet(base_direction)
-			spawn_bullet(base_direction.rotated(-PI / 4))
-			spawn_bullet(base_direction.rotated(PI / 4))
-		else:
-			spawn_bullet(base_direction)
-		
-		$FireCD.start()
-
 func apply_coffee_buff(effect_amount: int, effect_duration: float) -> void:
 	speed_bonus = effect_amount
 	
@@ -59,6 +39,26 @@ func spawn_bullet(direction: Vector2) -> void:
 	
 	get_parent().add_child(bullet)
 
+func fire() -> void:
+	if !$FireCD.is_stopped():
+		return
+	
+	if Input.is_action_pressed("lmb"):
+		var base_direction = (get_global_mouse_position() - global_position).normalized()
+		
+		if gun_buff_active:
+			spawn_bullet(base_direction)
+			spawn_bullet(base_direction.rotated(-PI / 4))
+			spawn_bullet(base_direction.rotated(PI / 4))
+		else:
+			spawn_bullet(base_direction)
+		
+		$FireCD.start()
+
+func get_input() -> void:
+	var input_dir = Input.get_vector("left", "right", "up", "down")
+	velocity = input_dir.normalized() * speed
+
 func _ready() -> void:
 	add_to_group("Player")
 	screen_size = get_viewport_rect().size
@@ -73,12 +73,15 @@ func _physics_process(_delta: float) -> void:
 	
 	var mouse = get_local_mouse_position()
 	
+	# PLAYER 8 FACING ANGLE CALCULATION
 	if mouse != Vector2.ZERO:
 		var angle = snappedf(mouse.angle(),PI / 4) / (PI / 4)
 		angle = wrap(int(angle), 0, 8)
 		
+		# Works since sprite naming pattern is based on the angle output
 		$AnimatedSprite2D.animation = "walk" + str(angle)
 	
+	# Makes it so when player is not moving its Sprite frame directs to 2nd frame
 	if velocity.length() != 0:
 		$AnimatedSprite2D.play()
 	else:
