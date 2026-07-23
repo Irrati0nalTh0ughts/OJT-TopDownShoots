@@ -2,5 +2,12 @@ extends Resource
 
 class_name DataEntry
 
-@export var ItemData : CollectibleData
+enum GoblinType { BASE, CHARGER }
+
 @export var weight : int
+
+@export_category("Collectibles")
+@export var ItemData : CollectibleData
+
+@export_category("Mob Types")
+@export var goblin_type : GoblinType

@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=4 uid="uid://4y0e1u36mrax"]
+[gd_scene load_steps=22 format=4 uid="uid://4y0e1u36mrax"]
 
 [ext_resource type="Script" uid="uid://d2ep7es0tssar" path="res://Scripts/World/world.gd" id="1_adcqc"]
 [ext_resource type="Texture2D" uid="uid://txysa54jrj7j" path="res://assets/items/heart.png" id="2_fcotr"]
@@ -34,23 +34,42 @@ bg_color = Color(0, 0, 0, 0.313726)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o06y3"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_fcotr"]
+vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)])
+agent_radius = 0.0
+
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_a02cp"]
 texture = ExtResource("4_adcqc")
 0:0/0 = 0
+0:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_fcotr")
 1:0/0 = 0
+1:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_fcotr")
 2:0/0 = 0
+2:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_fcotr")
 3:0/0 = 0
+3:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_fcotr")
 4:0/0 = 0
+4:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_fcotr")
 5:0/0 = 0
+5:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_fcotr")
 6:0/0 = 0
 0:1/0 = 0
+0:1/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_fcotr")
 1:1/0 = 0
+1:1/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_fcotr")
 2:1/0 = 0
+2:1/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_fcotr")
 3:1/0 = 0
+3:1/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_fcotr")
 4:1/0 = 0
+4:1/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_fcotr")
 5:1/0 = 0
+5:1/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_fcotr")
 
 [sub_resource type="TileSet" id="TileSet_go701"]
+navigation_layer_0/layers = 1
 sources/0 = SubResource("TileSetAtlasSource_a02cp")
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_go701"]
@@ -73,7 +92,7 @@ texture = ExtResource("4_adcqc")
 5:1/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_8j60k"]
-physics_layer_0/collision_layer = 2
+physics_layer_0/collision_layer = 1
 physics_layer_0/collision_mask = 0
 physics_layer_0/physics_material = SubResource("PhysicsMaterial_go701")
 sources/0 = SubResource("TileSetAtlasSource_5a7ea")

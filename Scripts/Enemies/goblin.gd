@@ -3,68 +3,136 @@ extends CharacterBody2D
 signal i_died
 signal i_was_here
 
-enum GoblinState { ENTERING, IDLE_WAIT, CHASING, DEAD }
+enum GoblinTypes { BASE_GOBLIN, CHARGER_GOBLIN }
+enum GoblinState { ENTERING, IDLE_WAIT, CHASING, CHARGING, DEAD }
 
-# Meaning the first class/scene inside that Group. IMO Good for use only when there is only 1 Node inside.
+@export var goblin_type: GoblinTypes = GoblinTypes.BASE_GOBLIN
+@export var droptable : DropTable
+@export var charge_cooldown_time: float = 3.0 # Adjustable cooldown duration
+
 @onready var player : CharacterBody2D = get_tree().get_first_node_in_group("Player") 
 @onready var state : GoblinState = GoblinState.ENTERING
 
-# Referenced DropTable so that I can get the output of the function inside it DropRNG()
-@export var droptable : DropTable
+@onready var nav_agent: NavigationAgent2D = $Nav2d
+@onready var raycast: RayCast2D = $RayCast2D
+@onready var stats: StatComponent = $StatComponent
+@onready var hitbox_area: Area2D = $HitboxArea
+@onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
-var damage : int = 1
-var speed : int
+@onready var attack_cd: Timer = $AttackCD
+@onready var move_toward_timer: Timer = $MoveTowardTimer
+@onready var timer_to_idle: Timer = $TimerToIdle
+@onready var removal: Timer = $Removal
 
 var direction : Vector2
+var charge_direction : Vector2 = Vector2.ZERO
+var is_charge_on_cooldown: bool = false
 
-# Connected to Bullet.tscn VIA has_method("dead") for check and assuming it checks, you can call "body.dead()"
-func dead() -> void:
+func _ready() -> void:
+	add_to_group("enemies")
+	setup_goblin_stats()
+	
+	stats.you_died.connect(dead)
+
+func setup_goblin_stats() -> void:
+	if goblin_type == GoblinTypes.CHARGER_GOBLIN:
+		stats.initialize_stats(4.0, randf_range(80.0, 90.0), 2.0)
+		attack_cd.wait_time = charge_cooldown_time
+	else:
+		stats.initialize_stats(2.0, randf_range(90.0, 150.0), 1.0)
+
+# GOBLIN STATE MACHINE
+func _physics_process(_delta: float) -> void:
 	if state == GoblinState.DEAD:
 		return
+		
+	match state:
+		GoblinState.ENTERING:
+			initial_entry()
 
-	state = GoblinState.DEAD
-	velocity = Vector2.ZERO
-	$TimerToIdle.stop()
-	$MoveTowardTimer.stop()
+		GoblinState.IDLE_WAIT:
+			animated_sprite_2d.play("idle")
+			velocity = Vector2.ZERO
+			if goblin_type == GoblinTypes.CHARGER_GOBLIN:
+				check_target()
 
-	i_died.emit()
-	# Emits its final position and RNG output to listeners
-	i_was_here.emit(global_position, droptable.DropRNG())
-	# Removes itself from group so counter doesn't count dead goblins as well
-	remove_from_group("enemies")
-	$AnimatedSprite2D.play("dead")
-	$Removal.start()
-	collision_layer = 0
-	collision_mask = 0
+		GoblinState.CHASING:
+			move_to_target()
+			if goblin_type == GoblinTypes.CHARGER_GOBLIN:
+				check_target()
+				
+		GoblinState.CHARGING:
+			execute_charge()
 
-# Moves into player screen rect after Spawn
+
 func initial_entry() -> void:
-	# Won't move to center if TimerToIdle is working, Player is nonexistent and Goblin not alive
-	if !is_instance_valid(player) and state == GoblinState.DEAD:
+	if !is_instance_valid(player):
 		return
-	else:
-		$AnimatedSprite2D.play("walk")
+		
+	animated_sprite_2d.play("walk")
+	var entry_speed: float = 80.0
+	var dist = get_viewport_rect().get_center() - position
+	velocity = dist.normalized() * entry_speed
+	flip()
+	move_and_slide()
 
-		speed = 80
-		var dist = get_viewport_rect().get_center() - position
-		velocity = dist.normalized() * speed
-		flip()
-		move_and_slide()
 
-# Moves after Idle, in acting a goblin seeing the player
 func move_to_target() -> void:
 	if !is_instance_valid(player):
 		return
-	$AnimatedSprite2D.play("run")
-
-	speed = 150
-	direction = (player.global_position - global_position).normalized()
-	velocity = direction * speed
+		
+	animated_sprite_2d.play("run")
+	
+	nav_agent.target_position = player.global_position
+	
+	if nav_agent.is_navigation_finished():
+		return
+		
+	var next_path_pos = nav_agent.get_next_path_position()
+	direction = (next_path_pos - global_position).normalized()
+	velocity = direction * stats.speed
 
 	flip()
 	move_and_slide()
 
-# Flips Sprite
+# Charger detection mechanics
+func check_target() -> void:
+	if !is_instance_valid(player) or is_charge_on_cooldown:
+		return
+
+	raycast.target_position = to_local(player.global_position)
+	raycast.force_raycast_update()
+	
+	if raycast.is_colliding():
+		var collider = raycast.get_collider()
+		if collider == player:
+			charge_direction = (player.global_position - global_position).normalized()
+			state = GoblinState.CHARGING
+			animated_sprite_2d.play("run")
+
+# Charger-specific charging movement loop
+func execute_charge() -> void:
+	var charge_speed: float = 350.0
+	velocity = charge_direction * charge_speed
+	flip()
+
+	var collided = move_and_slide()
+
+	if collided:
+		for i in get_slide_collision_count():
+			var collision = get_slide_collision(i)
+			var collider = collision.get_collider()
+
+			if collider == player and collider.has_method("took_a_hit"):
+				collider.took_a_hit(stats.damage)
+
+			# Start cooldown process immediately after impact
+			is_charge_on_cooldown = true
+			attack_cd.start()
+
+			state = GoblinState.CHASING
+			break
+
 func flip() -> void:
 	if velocity.x != 0:
 		if velocity.x < -0.1:
@@ -72,52 +140,44 @@ func flip() -> void:
 		elif velocity.x > 0.1:
 			$AnimatedSprite2D.flip_h = false
 
-func _ready() -> void:
-	add_to_group("enemies")
-
-# GOBLIN STATE MACHINE
-func _physics_process(_delta: float) -> void:
-	if state == GoblinState.DEAD:
-		return
-	match state:
-		GoblinState.ENTERING:
-			initial_entry()
-
-		GoblinState.IDLE_WAIT:
-			$AnimatedSprite2D.play("idle")
-
-		GoblinState.CHASING:
-			move_to_target()
-
-
-func _on_player_area_body_entered(_body: Node2D) -> void:
-	if state == GoblinState.DEAD:
-		return
-
-	if _body.has_method("took_a_hit"):
-		_body.took_a_hit(damage)
-
-
 func _on_visible_on_screen_notifier_2d_screen_entered() -> void:
 	if state == GoblinState.ENTERING:
-		$TimerToIdle.start()
+		timer_to_idle.start()
 
-
-# Start when Goblin is seen within Screen Rect
 func _on_timer_to_idle_timeout() -> void:
 	state = GoblinState.IDLE_WAIT
-	velocity = Vector2.ZERO
-	$AnimatedSprite2D.play("idle")
-	$MoveTowardTimer.start()
-	#print("arrived...")
+	animated_sprite_2d.play("idle")
+	move_toward_timer.start()
 
-
-# After IdleTimer
 func _on_move_toward_timer_timeout() -> void:
-	state = GoblinState.CHASING
-	#print("old spawn")
+	if state != GoblinState.CHARGING:
+		state = GoblinState.CHASING
 
+func _on_hitbox_body_entered(body: Node2D) -> void:
+	if state == GoblinState.DEAD:
+		return
+	if body.has_method("took_a_hit"):
+		# If the charger is on cooldown, deal 1 damage instead of full damage
+		var current_damage = 1.0 if (goblin_type == GoblinTypes.CHARGER_GOBLIN and is_charge_on_cooldown) else stats.damage
+		body.took_a_hit(current_damage)
 
-# Erases goblin in scene tree after Timeout
+func _on_attack_cd_timeout() -> void:
+	is_charge_on_cooldown = false
+
+func dead() -> void:
+	state = GoblinState.DEAD
+	velocity = Vector2.ZERO
+	timer_to_idle.stop()
+	move_toward_timer.stop()
+	attack_cd.stop()
+
+	i_died.emit()
+	i_was_here.emit(global_position, droptable.DropRNG())
+	remove_from_group("enemies")
+	animated_sprite_2d.play("dead")
+	removal.start()
+	collision_layer = 0
+	collision_mask = 0
+
 func _on_removal_timeout() -> void:
 	queue_free()
