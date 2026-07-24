@@ -6,8 +6,8 @@
 [resource]
 script = ExtResource("1_ghqlt")
 collectibles_type = 2
-lifetime = 5.0
-effect_amount = 2
-effect_duration = 4.0
+lifetime = 10.0
+effect_amount = 10.0
+effect_duration = 0.0
 texture = ExtResource("2_axo6n")
 metadata/_custom_type_script = "uid://bo565x2qknyjf"

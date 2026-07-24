@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="DataEntry" load_steps=3 format=3 uid="uid://d0jweyfie31go"]
+
+[ext_resource type="Resource" uid="uid://bm2ekrgpgwjg3" path="res://Resources/Collectibles/gunmod_box.tres" id="1_jvi1q"]
+[ext_resource type="Script" uid="uid://c571moc2g8bow" path="res://Scripts/DropSystem/DropEntry.gd" id="2_sqmp0"]
+
+[resource]
+script = ExtResource("2_sqmp0")
+weight = 40
+ItemData = ExtResource("1_jvi1q")
+goblin_type = 0

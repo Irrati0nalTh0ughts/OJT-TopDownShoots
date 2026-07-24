@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="DataEntry" load_steps=3 format=3 uid="uid://c08y25wbluxxu"]
+
+[ext_resource type="Resource" uid="uid://cg218dwln5gfo" path="res://Resources/Collectibles/SCBOX.tres" id="1_vtg38"]
+[ext_resource type="Script" uid="uid://c571moc2g8bow" path="res://Scripts/DropSystem/DropEntry.gd" id="2_nmtl3"]
+
+[resource]
+script = ExtResource("2_nmtl3")
+weight = 15
+ItemData = ExtResource("1_vtg38")
+goblin_type = 0

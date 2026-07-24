@@ -1,0 +1,208 @@
+[gd_scene load_steps=3 format=3 uid="uid://b3muyi2psblj"]
+
+[ext_resource type="Script" uid="uid://rns6fjpofvgc" path="res://Scripts/World/settings_ui.gd" id="1_ua7im"]
+[ext_resource type="FontFile" uid="uid://dtcwn1y0pcsww" path="res://assets/m5x7.ttf" id="2_gst63"]
+
+[node name="SETTINGS_UI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ua7im")
+metadata/_edit_use_anchors_ = true
+
+[node name="SttngsPnl" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SttngsLbl" type="Label" parent="SttngsPnl"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 23.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("2_gst63")
+theme_override_font_sizes/font_size = 120
+text = "SETTINGS"
+
+[node name="SttngsSC" type="ScrollContainer" parent="SttngsPnl"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.23529
+offset_top = -301.0
+offset_bottom = -301.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SttngsMainVBC" type="VBoxContainer" parent="SttngsPnl/SttngsSC"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="SttngsMainHBC" type="HBoxContainer" parent="SttngsPnl/SttngsSC/SttngsMainVBC"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="SttngsTypes" type="VBoxContainer" parent="SttngsPnl/SttngsSC/SttngsMainVBC/SttngsMainHBC"]
+layout_mode = 2
+size_flags_horizontal = 0
+alignment = 1
+
+[node name="MstrLbl" type="Label" parent="SttngsPnl/SttngsSC/SttngsMainVBC/SttngsMainHBC/SttngsTypes"]
+custom_minimum_size = Vector2(365, 64)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_fonts/font = ExtResource("2_gst63")
+theme_override_font_sizes/font_size = 70
+text = "Master Volume"
+vertical_alignment = 1
+
+[node name="McsLbl" type="Label" parent="SttngsPnl/SttngsSC/SttngsMainVBC/SttngsMainHBC/SttngsTypes"]
+custom_minimum_size = Vector2(365, 64)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_fonts/font = ExtResource("2_gst63")
+theme_override_font_sizes/font_size = 70
+text = "Music Volume"
+vertical_alignment = 1
+
+[node name="SFXLbl" type="Label" parent="SttngsPnl/SttngsSC/SttngsMainVBC/SttngsMainHBC/SttngsTypes"]
+custom_minimum_size = Vector2(365, 64)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_fonts/font = ExtResource("2_gst63")
+theme_override_font_sizes/font_size = 70
+text = "SFX Volume"
+vertical_alignment = 1
+
+[node name="WindowsLbl" type="Label" parent="SttngsPnl/SttngsSC/SttngsMainVBC/SttngsMainHBC/SttngsTypes"]
+custom_minimum_size = Vector2(365, 64)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_fonts/font = ExtResource("2_gst63")
+theme_override_font_sizes/font_size = 70
+text = "Window Mode"
+vertical_alignment = 1
+
+[node name="ResLbl" type="Label" parent="SttngsPnl/SttngsSC/SttngsMainVBC/SttngsMainHBC/SttngsTypes"]
+custom_minimum_size = Vector2(365, 64)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_fonts/font = ExtResource("2_gst63")
+theme_override_font_sizes/font_size = 70
+text = "Resolution"
+vertical_alignment = 1
+
+[node name="FPSLbl" type="Label" parent="SttngsPnl/SttngsSC/SttngsMainVBC/SttngsMainHBC/SttngsTypes"]
+custom_minimum_size = Vector2(365, 64)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_fonts/font = ExtResource("2_gst63")
+theme_override_font_sizes/font_size = 70
+text = "FPS Limit"
+vertical_alignment = 1
+
+[node name="VSyncLbl" type="Label" parent="SttngsPnl/SttngsSC/SttngsMainVBC/SttngsMainHBC/SttngsTypes"]
+custom_minimum_size = Vector2(365, 64)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_fonts/font = ExtResource("2_gst63")
+theme_override_font_sizes/font_size = 70
+text = "VSync"
+vertical_alignment = 1
+
+[node name="SttngsBttns" type="VBoxContainer" parent="SttngsPnl/SttngsSC/SttngsMainVBC/SttngsMainHBC"]
+layout_mode = 2
+size_flags_horizontal = 8
+alignment = 1
+
+[node name="MasterSlider" type="HSlider" parent="SttngsPnl/SttngsSC/SttngsMainVBC/SttngsMainHBC/SttngsBttns"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(365, 64)
+layout_mode = 2
+
+[node name="MusicSlider" type="HSlider" parent="SttngsPnl/SttngsSC/SttngsMainVBC/SttngsMainHBC/SttngsBttns"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(365, 64)
+layout_mode = 2
+
+[node name="SFXSlider" type="HSlider" parent="SttngsPnl/SttngsSC/SttngsMainVBC/SttngsMainHBC/SttngsBttns"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(365, 64)
+layout_mode = 2
+
+[node name="WindowType" type="OptionButton" parent="SttngsPnl/SttngsSC/SttngsMainVBC/SttngsMainHBC/SttngsBttns"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(365, 64)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_gst63")
+
+[node name="ResType" type="OptionButton" parent="SttngsPnl/SttngsSC/SttngsMainVBC/SttngsMainHBC/SttngsBttns"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(365, 64)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_gst63")
+
+[node name="FPSType" type="OptionButton" parent="SttngsPnl/SttngsSC/SttngsMainVBC/SttngsMainHBC/SttngsBttns"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(365, 64)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_gst63")
+
+[node name="VSyncCB" type="CheckBox" parent="SttngsPnl/SttngsSC/SttngsMainVBC/SttngsMainHBC/SttngsBttns"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(365, 64)
+layout_mode = 2
+icon_alignment = 1
+
+[node name="SttngsBttnHBC" type="HBoxContainer" parent="SttngsPnl"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.877451
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="SttngsBckBttn" type="Button" parent="SttngsPnl/SttngsBttnHBC"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("2_gst63")
+theme_override_font_sizes/font_size = 100
+text = "BACK"
+
+[node name="SttngsApplyBttn" type="Button" parent="SttngsPnl/SttngsBttnHBC"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("2_gst63")
+theme_override_font_sizes/font_size = 100
+text = "APPLY"
+
+[connection signal="value_changed" from="SttngsPnl/SttngsSC/SttngsMainVBC/SttngsMainHBC/SttngsBttns/MasterSlider" to="." method="_on_master_slider_value_changed"]
+[connection signal="value_changed" from="SttngsPnl/SttngsSC/SttngsMainVBC/SttngsMainHBC/SttngsBttns/MusicSlider" to="." method="_on_music_slider_value_changed"]
+[connection signal="value_changed" from="SttngsPnl/SttngsSC/SttngsMainVBC/SttngsMainHBC/SttngsBttns/SFXSlider" to="." method="_on_sfx_slider_value_changed"]
+[connection signal="item_selected" from="SttngsPnl/SttngsSC/SttngsMainVBC/SttngsMainHBC/SttngsBttns/WindowType" to="." method="_on_window_type_item_selected"]
+[connection signal="item_selected" from="SttngsPnl/SttngsSC/SttngsMainVBC/SttngsMainHBC/SttngsBttns/ResType" to="." method="_on_res_type_item_selected"]
+[connection signal="item_selected" from="SttngsPnl/SttngsSC/SttngsMainVBC/SttngsMainHBC/SttngsBttns/FPSType" to="." method="_on_fps_type_item_selected"]
+[connection signal="toggled" from="SttngsPnl/SttngsSC/SttngsMainVBC/SttngsMainHBC/SttngsBttns/VSyncCB" to="." method="_on_v_sync_cb_toggled"]
+[connection signal="pressed" from="SttngsPnl/SttngsBttnHBC/SttngsBckBttn" to="." method="_on_sttngs_bck_bttn_pressed"]
+[connection signal="pressed" from="SttngsPnl/SttngsBttnHBC/SttngsApplyBttn" to="." method="_on_sttngs_apply_bttn_pressed"]

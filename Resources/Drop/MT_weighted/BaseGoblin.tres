@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="DataEntry" load_steps=2 format=3 uid="uid://dwskprfxkpfho"]
+
+[ext_resource type="Script" uid="uid://c571moc2g8bow" path="res://Scripts/DropSystem/DropEntry.gd" id="1_kn74q"]
+
+[resource]
+script = ExtResource("1_kn74q")
+weight = 160
+goblin_type = 1

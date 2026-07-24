@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="DataEntry" load_steps=2 format=3 uid="uid://68ojujv31a4e"]
+
+[ext_resource type="Script" uid="uid://c571moc2g8bow" path="res://Scripts/DropSystem/DropEntry.gd" id="1_jmsca"]
+
+[resource]
+script = ExtResource("1_jmsca")
+weight = 40
+goblin_type = 2

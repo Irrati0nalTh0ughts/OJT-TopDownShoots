@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="DropTable" load_steps=9 format=3 uid="uid://dn2bpqk04lscb"]
+
+[ext_resource type="Script" uid="uid://c571moc2g8bow" path="res://Scripts/DropSystem/DropEntry.gd" id="1_ev7cp"]
+[ext_resource type="Resource" uid="uid://dv8vjil7d4tok" path="res://Resources/Drop/collectible_weighted/lifemoditem_weighted.tres" id="2_dcc0u"]
+[ext_resource type="Resource" uid="uid://boeh7p60lll6u" path="res://Resources/Drop/collectible_weighted/coffeeitem_weighted.tres" id="3_plfck"]
+[ext_resource type="Resource" uid="uid://d0jweyfie31go" path="res://Resources/Drop/collectible_weighted/gunmoditem_weighted.tres" id="4_dcc0u"]
+[ext_resource type="Resource" uid="uid://cxou134yj1j5i" path="res://Resources/Drop/collectible_weighted/SLBOX_weighted.tres" id="5_5ghap"]
+[ext_resource type="Script" uid="uid://btfi6cb5o14c7" path="res://Scripts/DropSystem/DropTable.gd" id="5_kkhy8"]
+[ext_resource type="Resource" uid="uid://c08y25wbluxxu" path="res://Resources/Drop/collectible_weighted/SCBOX_weighted.tres" id="6_i0s1f"]
+[ext_resource type="Resource" uid="uid://ce8yggm40pjgx" path="res://Resources/Drop/collectible_weighted/SGBOX_weighted.tres" id="7_15x6o"]
+
+[resource]
+script = ExtResource("5_kkhy8")
+entry_list = Array[ExtResource("1_ev7cp")]([ExtResource("2_dcc0u"), ExtResource("3_plfck"), ExtResource("4_dcc0u"), ExtResource("5_5ghap"), ExtResource("6_i0s1f"), ExtResource("7_15x6o")])
+nothing_weight = 330

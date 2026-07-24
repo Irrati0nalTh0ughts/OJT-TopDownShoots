@@ -2,7 +2,7 @@ extends Resource
 
 class_name DataEntry
 
-enum GoblinType { BASE, CHARGER }
+enum GoblinType { NONE, BASE, CHARGER }
 
 @export var weight : int
 

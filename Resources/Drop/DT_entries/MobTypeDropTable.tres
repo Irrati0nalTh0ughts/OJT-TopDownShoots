@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="DropTable" load_steps=5 format=3 uid="uid://1hydiyy1pwik"]
+
+[ext_resource type="Script" uid="uid://c571moc2g8bow" path="res://Scripts/DropSystem/DropEntry.gd" id="1_w1be5"]
+[ext_resource type="Resource" uid="uid://dwskprfxkpfho" path="res://Resources/Drop/MT_weighted/BaseGoblin.tres" id="2_qe88w"]
+[ext_resource type="Resource" uid="uid://68ojujv31a4e" path="res://Resources/Drop/MT_weighted/GoblinCharger.tres" id="3_ttfjt"]
+[ext_resource type="Script" uid="uid://btfi6cb5o14c7" path="res://Scripts/DropSystem/DropTable.gd" id="4_u3coq"]
+
+[resource]
+script = ExtResource("4_u3coq")
+entry_list = Array[ExtResource("1_w1be5")]([ExtResource("2_qe88w"), ExtResource("3_ttfjt")])
+nothing_weight = 500

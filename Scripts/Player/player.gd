@@ -1,97 +1,107 @@
 extends CharacterBody2D
 
-signal i_got_hit(dmg: int)
+signal current_ammo_changed(ammo: int)
+signal i_died
+signal i_lost_a_life
 
 @export var bullet_scene : PackedScene
+@export var respawn_delay: float = 1.0
 
-var base_speed: int = 250
-var speed_bonus: int = 0
+@onready var stats: StatComponent = $StatsComponent
+@onready var buff_component: BuffComponent = $BuffComponent
 
-var speed: int:
-	get:
-		return base_speed + speed_bonus
+@onready var state_machine: PlayerStateMachine = $PlayerStateMachine
+@onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
+@onready var player: CharacterBody2D = $"."
 
-var gun_buff_active: bool = false
+var current_ammo: int
+var base_speed: float = 250.0
 var screen_size : Vector2
 
-func took_a_hit(damage: int) -> void:
-	i_got_hit.emit(damage)
-	print("player got hit")
-
-func apply_coffee_buff(effect_amount: int, effect_duration: float) -> void:
-	speed_bonus = effect_amount
-	
-	$Coffee_Duration.wait_time = effect_duration
-	$Coffee_Duration.start()
-
-func apply_gun_buff(_effect_amount: int, effect_duration: float) -> void:
-	gun_buff_active = true
-
-	$Gun_Duration.wait_time = effect_duration
-	$Gun_Duration.start()
-
-func spawn_bullet(direction: Vector2) -> void:
-	var bullet = bullet_scene.instantiate()
-	
-	bullet.global_position = global_position
-	bullet.direction = direction
-	bullet.rotation = direction.angle()
-	
-	get_parent().add_child(bullet)
-
-func fire() -> void:
-	if !$FireCD.is_stopped():
-		return
-	
-	if Input.is_action_pressed("lmb"):
-		var base_direction = (get_global_mouse_position() - global_position).normalized()
-		
-		if gun_buff_active:
-			spawn_bullet(base_direction)
-			spawn_bullet(base_direction.rotated(-PI / 4))
-			spawn_bullet(base_direction.rotated(PI / 4))
-		else:
-			spawn_bullet(base_direction)
-		
-		$FireCD.start()
-
-func get_input() -> void:
-	var input_dir = Input.get_vector("left", "right", "up", "down")
-	velocity = input_dir.normalized() * speed
 
 func _ready() -> void:
 	add_to_group("Player")
 	screen_size = get_viewport_rect().size
 	position = screen_size / 2
 
+	stats.initialize_stats(10.0, base_speed, 1.0)
+	current_ammo_changed.emit(current_ammo)
+	i_lost_a_life.emit(stats.current_health)
+
+
+func took_a_hit(damage: int) -> void:
+	print("player got hit")
+
+	if state_machine.current_state == PlayerStateMachine.State.DEAD:
+		return
+
+	stats.took_damage(damage)
+
+	if state_machine.current_state != PlayerStateMachine.State.DEAD:
+		state_machine.SetState(PlayerStateMachine.State.HURT)
+
+
+func spawn_bullet(direction: Vector2) -> void:
+	var bullet = bullet_scene.instantiate()
+
+	bullet.global_position = global_position
+	bullet.direction = direction
+	bullet.rotation = direction.angle()
+
+	get_parent().add_child(bullet)
+
+
+func fire() -> void:
+	if !$FireCD.is_stopped() or current_ammo <= 0:
+		return
+	var base_direction = (get_global_mouse_position() - global_position).normalized()
+
+	if buff_component.special_gun_buff_active:
+		if Input.is_action_pressed("lmb"):
+			spawn_bullet(base_direction)
+			spawn_bullet(base_direction.rotated(-PI / 4))
+			spawn_bullet(base_direction.rotated(PI / 4))
+	else:
+		if Input.is_action_just_pressed("lmb"):
+			spawn_bullet(base_direction)
+
+			$FireCD.start()
+			current_ammo -= 1
+			current_ammo_changed.emit(current_ammo)
+
+
 func _physics_process(_delta: float) -> void:
-	fire()
-	get_input()
-	move_and_slide()
+	var input_dir = Input.get_vector("left", "right", "up", "down")
+	velocity = input_dir.normalized() * stats.movement_speed
 	
-	position = position.clamp(Vector2.ZERO, screen_size)
-	
+	state_machine.UpdateState(_delta)
+	if state_machine.can_take_input():
+		move_and_slide()
+		position = position.clamp(Vector2.ZERO, screen_size)
+
+	update_facing_animation()
+
+
+func update_facing_animation() -> void:
 	var mouse = get_local_mouse_position()
-	
+
 	# PLAYER 8 FACING ANGLE CALCULATION
 	if mouse != Vector2.ZERO:
-		var angle = snappedf(mouse.angle(),PI / 4) / (PI / 4)
+		var angle = snappedf(mouse.angle(), PI / 4) / (PI / 4)
 		angle = wrap(int(angle), 0, 8)
-		
 		# Works since sprite naming pattern is based on the angle output
-		$AnimatedSprite2D.animation = "walk" + str(angle)
-	
-	# Makes it so when player is not moving its Sprite frame directs to 2nd frame
+		animated_sprite_2d.animation = "walk" + str(angle)
+
 	if velocity.length() != 0:
-		$AnimatedSprite2D.play()
+		animated_sprite_2d.play()
 	else:
-		$AnimatedSprite2D.stop()
-		$AnimatedSprite2D.frame = 1
+		animated_sprite_2d.stop()
+		animated_sprite_2d.frame = 1
 
 
-func _on_gun_duration_timeout() -> void:
-	gun_buff_active = false
+func _on_stats_component_health_changed(current_health: float, max_health: float) -> void:
+	i_lost_a_life.emit(current_health, max_health)
 
 
-func _on_coffee_duration_timeout() -> void:
-	speed_bonus = 0
+func _on_stats_component_you_died() -> void:
+	i_died.emit()

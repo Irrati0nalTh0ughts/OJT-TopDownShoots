@@ -18,6 +18,7 @@ enum GoblinState { ENTERING, IDLE_WAIT, CHASING, CHARGING, DEAD }
 @onready var stats: StatComponent = $StatComponent
 @onready var hitbox_area: Area2D = $HitboxArea
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 @onready var attack_cd: Timer = $AttackCD
 @onready var move_toward_timer: Timer = $MoveTowardTimer
@@ -37,6 +38,7 @@ func _ready() -> void:
 func setup_goblin_stats() -> void:
 	if goblin_type == GoblinTypes.CHARGER_GOBLIN:
 		stats.initialize_stats(4.0, randf_range(80.0, 90.0), 2.0)
+		animated_sprite_2d.self_modulate = Color.html("646464")
 		attack_cd.wait_time = charge_cooldown_time
 	else:
 		stats.initialize_stats(2.0, randf_range(90.0, 150.0), 1.0)
@@ -90,7 +92,7 @@ func move_to_target() -> void:
 		
 	var next_path_pos = nav_agent.get_next_path_position()
 	direction = (next_path_pos - global_position).normalized()
-	velocity = direction * stats.speed
+	velocity = direction * stats.movement_speed
 
 	flip()
 	move_and_slide()
@@ -144,6 +146,17 @@ func _on_visible_on_screen_notifier_2d_screen_entered() -> void:
 	if state == GoblinState.ENTERING:
 		timer_to_idle.start()
 
+func _on_screen_notif_screen_exited() -> void:
+	state = GoblinState.CHASING
+
+func _on_hitbox_area_body_entered(body: Node2D) -> void:
+	print("fk u")
+	if state == GoblinState.DEAD:
+		return
+	if body.has_method("took_a_hit"):
+		var current_damage = 1.0 if (goblin_type == GoblinTypes.CHARGER_GOBLIN and is_charge_on_cooldown) else stats.damage
+		body.took_a_hit(current_damage)
+
 func _on_timer_to_idle_timeout() -> void:
 	state = GoblinState.IDLE_WAIT
 	animated_sprite_2d.play("idle")
@@ -152,14 +165,6 @@ func _on_timer_to_idle_timeout() -> void:
 func _on_move_toward_timer_timeout() -> void:
 	if state != GoblinState.CHARGING:
 		state = GoblinState.CHASING
-
-func _on_hitbox_body_entered(body: Node2D) -> void:
-	if state == GoblinState.DEAD:
-		return
-	if body.has_method("took_a_hit"):
-		# If the charger is on cooldown, deal 1 damage instead of full damage
-		var current_damage = 1.0 if (goblin_type == GoblinTypes.CHARGER_GOBLIN and is_charge_on_cooldown) else stats.damage
-		body.took_a_hit(current_damage)
 
 func _on_attack_cd_timeout() -> void:
 	is_charge_on_cooldown = false
@@ -172,7 +177,7 @@ func dead() -> void:
 	attack_cd.stop()
 
 	i_died.emit()
-	i_was_here.emit(global_position, droptable.DropRNG())
+	i_was_here.emit(global_position, droptable.drop_loot_rng())
 	remove_from_group("enemies")
 	animated_sprite_2d.play("dead")
 	removal.start()

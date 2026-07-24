@@ -1,38 +1,20 @@
-[gd_scene load_steps=22 format=4 uid="uid://4y0e1u36mrax"]
+[gd_scene load_steps=23 format=4 uid="uid://4y0e1u36mrax"]
 
 [ext_resource type="Script" uid="uid://d2ep7es0tssar" path="res://Scripts/World/world.gd" id="1_adcqc"]
-[ext_resource type="Texture2D" uid="uid://txysa54jrj7j" path="res://assets/items/heart.png" id="2_fcotr"]
 [ext_resource type="PackedScene" uid="uid://bfoc8yfjtpy36" path="res://Scenes/Spawner/spawn_area.tscn" id="2_ugf0j"]
-[ext_resource type="Texture2D" uid="uid://dpj0bd1ba6sm8" path="res://assets/enemies/goblin/goblin_idle_anim_f0.png" id="3_y0d6x"]
 [ext_resource type="Texture2D" uid="uid://bnd0t5lx6osx3" path="res://assets/misc/Grass.png" id="4_adcqc"]
+[ext_resource type="Resource" uid="uid://1hydiyy1pwik" path="res://Resources/Drop/DT_entries/MobTypeDropTable.tres" id="4_fcotr"]
 [ext_resource type="PackedScene" uid="uid://csevv8lgqg7yj" path="res://Scenes/Player/player.tscn" id="5_0ph6x"]
 [ext_resource type="PackedScene" uid="uid://cetx42o6l2n28" path="res://Scenes/Collectibles/collectibles.tscn" id="5_fcotr"]
 [ext_resource type="PackedScene" uid="uid://bdfxtr7lis6lg" path="res://Scenes/Spawner/collectibles_spawner.tscn" id="6_y0d6x"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5v1tr"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0fj1v"]
-bg_color = Color(0.740333, 0.563464, 0.339149, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-
-[sub_resource type="SystemFont" id="SystemFont_5v1tr"]
-font_weight = 900
-subpixel_positioning = 0
-
-[sub_resource type="FontVariation" id="FontVariation_ikia7"]
-base_font = SubResource("SystemFont_5v1tr")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7yui6"]
-bg_color = Color(0, 0, 0, 0.847059)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c5t2i"]
-bg_color = Color(0, 0, 0, 0.313726)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o06y3"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
+[ext_resource type="Script" uid="uid://cs83jk5aouwq2" path="res://Scripts/World/mainmenu_ui.gd" id="8_0ph6x"]
+[ext_resource type="PackedScene" uid="uid://cw02pmsm6dux8" path="res://Scenes/World/hud.tscn" id="8_fcotr"]
+[ext_resource type="Script" uid="uid://guvt2kj4stom" path="res://Scripts/World/game_hud.gd" id="8_pvt60"]
+[ext_resource type="Script" uid="uid://dd56jumx42m1g" path="res://Scripts/World/paused_ui.gd" id="8_ugf0j"]
+[ext_resource type="PackedScene" uid="uid://b3muyi2psblj" path="res://Scenes/World/settings_ui.tscn" id="9_0ph6x"]
+[ext_resource type="Shader" uid="uid://m2n2fhlxf1uv" path="res://Shaders/UI/welcome_label.gdshader" id="10_dbvd7"]
+[ext_resource type="FontFile" uid="uid://dtcwn1y0pcsww" path="res://assets/m5x7.ttf" id="11_4pv6w"]
+[ext_resource type="FontFile" uid="uid://cbka2doa5ylps" path="res://assets/Daydream.ttf" id="11_dr8i3"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_fcotr"]
 vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
@@ -97,289 +79,25 @@ physics_layer_0/collision_mask = 0
 physics_layer_0/physics_material = SubResource("PhysicsMaterial_go701")
 sources/0 = SubResource("TileSetAtlasSource_5a7ea")
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dr8i3"]
+shader = ExtResource("10_dbvd7")
+shader_parameter/glow_strength = 1.31
+shader_parameter/vignette_strength = 1.0
+shader_parameter/pulse_speed = 1.695
+shader_parameter/glow_color = Color(0.694118, 0.376471, 0, 1)
+shader_parameter/scanline_strength = 0.095
+
 [node name="World" type="Node2D" groups=["World"]]
 script = ExtResource("1_adcqc")
 
 [node name="Player" parent="." instance=ExtResource("5_0ph6x")]
 
 [node name="SpawnArea" parent="." instance=ExtResource("2_ugf0j")]
+spawn_table = ExtResource("4_fcotr")
 
 [node name="Collectibles" parent="." groups=["collectibles"] instance=ExtResource("5_fcotr")]
 
 [node name="Collectibles_Spawner" parent="." instance=ExtResource("6_y0d6x")]
-
-[node name="UI" type="CanvasLayer" parent="."]
-
-[node name="HUD" type="Control" parent="UI"]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="PlayerUi" type="Panel" parent="UI/HUD"]
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.937
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = 0.407959
-offset_bottom = -1.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_override_styles/panel = SubResource("StyleBoxFlat_5v1tr")
-
-[node name="WaveCount" type="Label" parent="UI/HUD/PlayerUi"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.398438
-anchor_right = 0.601563
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_override_font_sizes/font_size = 35
-text = "WAVE: 0"
-horizontal_alignment = 1
-vertical_alignment = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="LifeCount" type="Label" parent="UI/HUD/PlayerUi"]
-layout_mode = 0
-offset_left = 50.0
-offset_right = 100.0
-offset_bottom = 50.0
-theme_override_font_sizes/font_size = 35
-text = " X 3"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Heart" type="TextureRect" parent="UI/HUD/PlayerUi"]
-layout_mode = 0
-offset_right = 50.0
-offset_bottom = 50.0
-texture = ExtResource("2_fcotr")
-
-[node name="EnemyCount" type="Label" parent="UI/HUD/PlayerUi"]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -50.0
-offset_top = -50.0
-grow_horizontal = 0
-grow_vertical = 0
-theme_override_font_sizes/font_size = 35
-text = " X 10"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Goblin" type="TextureRect" parent="UI/HUD/PlayerUi"]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -155.0
-offset_top = -77.5
-offset_right = -105.0
-offset_bottom = -27.5
-grow_horizontal = 0
-grow_vertical = 0
-scale = Vector2(1.5, 1.5)
-texture = ExtResource("3_y0d6x")
-
-[node name="GameOver" type="Panel" parent="UI/HUD"]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="GameOverPanel" type="Panel" parent="UI/HUD/GameOver"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -175.0
-offset_top = -125.0
-offset_right = 175.0
-offset_bottom = 125.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_0fj1v")
-
-[node name="WaveLabel" type="Label" parent="UI/HUD/GameOver/GameOverPanel"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -109.5
-offset_top = -77.5
-offset_right = 109.5
-offset_bottom = -22.5
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.760584, 0.193108, 0.308117, 1)
-theme_override_fonts/font = SubResource("FontVariation_ikia7")
-theme_override_font_sizes/font_size = 40
-text = "GAMEOVER"
-
-[node name="RestartBttn" type="Button" parent="UI/HUD/GameOver/GameOverPanel"]
-process_mode = 2
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -92.5
-offset_top = 32.5
-offset_right = 92.5
-offset_bottom = 67.5
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.760784, 0.192157, 0.309804, 1)
-theme_override_font_sizes/font_size = 25
-theme_override_styles/hover = SubResource("StyleBoxFlat_7yui6")
-theme_override_styles/normal = SubResource("StyleBoxFlat_c5t2i")
-text = "Restart Game"
-
-[node name="HighWaveLabel" type="Label" parent="UI/HUD/GameOver/GameOverPanel"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -225.5
-offset_top = -200.0
-offset_right = 225.5
-offset_bottom = -31.0
-grow_horizontal = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 60
-text = "HIGHEST WAVE:
-"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="High" type="Panel" parent="UI/HUD"]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="HighPanel" type="Panel" parent="UI/HUD/High"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -175.0
-offset_top = -125.0
-offset_right = 175.0
-offset_bottom = 125.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_0fj1v")
-
-[node name="WaveLabel" type="Label" parent="UI/HUD/High/HighPanel"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -109.5
-offset_top = -77.5
-offset_right = 109.5
-offset_bottom = -22.5
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.992157, 0.815686, 0.0901961, 1)
-theme_override_fonts/font = SubResource("FontVariation_ikia7")
-theme_override_font_sizes/font_size = 40
-text = "GAMEOVER"
-
-[node name="RestartBttn" type="Button" parent="UI/HUD/High/HighPanel"]
-process_mode = 2
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -92.5
-offset_top = 32.5
-offset_right = 92.5
-offset_bottom = 67.5
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.992157, 0.815686, 0.0901961, 1)
-theme_override_font_sizes/font_size = 25
-theme_override_styles/hover = SubResource("StyleBoxFlat_7yui6")
-theme_override_styles/normal = SubResource("StyleBoxFlat_c5t2i")
-text = "Restart Game"
-
-[node name="HighWaveLabel" type="Label" parent="UI/HUD/High/HighPanel"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -225.5
-offset_top = -200.0
-offset_right = 225.5
-offset_bottom = -31.0
-grow_horizontal = 2
-theme_override_colors/font_color = Color(0.992157, 0.815686, 0.0901961, 1)
-theme_override_font_sizes/font_size = 60
-text = "HIGHEST WAVE:
-0"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="NextWave" type="Panel" parent="UI/HUD"]
-visible = false
-layout_mode = 1
-anchors_preset = 14
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_bottom = 50.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_o06y3")
-
-[node name="NextWaveLabel" type="Label" parent="UI/HUD/NextWave"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -302.5
-offset_top = -195.0
-offset_right = 302.5
-offset_bottom = -126.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.784314, 0, 0, 1)
-theme_override_font_sizes/font_size = 50
-text = "!!! Next Wave Incoming !!!"
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="MapLayout" type="Node2D" parent="."]
 
@@ -402,9 +120,193 @@ position = Vector2(386, 392)
 enabled = false
 zoom = Vector2(0.8, 0.8)
 
-[connection signal="i_got_hit" from="Player" to="." method="_on_player_i_got_hit"]
+[node name="UI_LAYER" type="CanvasLayer" parent="."]
+process_mode = 3
+
+[node name="HUD" parent="UI_LAYER" instance=ExtResource("8_fcotr")]
+unique_name_in_owner = true
+process_mode = 3
+
+[node name="GAME_HUD" type="Control" parent="UI_LAYER"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("8_pvt60")
+metadata/_edit_use_anchors_ = true
+
+[node name="MAINMENU_UI" type="Control" parent="UI_LAYER/GAME_HUD"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("8_0ph6x")
+
+[node name="MenuBG" type="VideoStreamPlayer" parent="UI_LAYER/GAME_HUD/MAINMENU_UI"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="StartMenu" type="VBoxContainer" parent="UI_LAYER/GAME_HUD/MAINMENU_UI"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.358073
+anchor_top = 0.485294
+anchor_right = 0.641927
+anchor_bottom = 0.759804
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 15
+metadata/_edit_use_anchors_ = true
+
+[node name="Start" type="Button" parent="UI_LAYER/GAME_HUD/MAINMENU_UI/StartMenu"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("11_4pv6w")
+theme_override_font_sizes/font_size = 80
+text = "START"
+icon_alignment = 1
+
+[node name="Settings" type="Button" parent="UI_LAYER/GAME_HUD/MAINMENU_UI/StartMenu"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("11_4pv6w")
+theme_override_font_sizes/font_size = 80
+text = "OPTIONS"
+icon_alignment = 1
+
+[node name="Quit" type="Button" parent="UI_LAYER/GAME_HUD/MAINMENU_UI/StartMenu"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("11_4pv6w")
+theme_override_font_sizes/font_size = 80
+text = "QUIT"
+icon_alignment = 1
+
+[node name="MenuLabel" type="Label" parent="UI_LAYER/GAME_HUD/MAINMENU_UI"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_dr8i3")
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 45.0
+offset_bottom = 336.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("11_dr8i3")
+theme_override_font_sizes/font_size = 45
+text = "WELCOME
+TO
+ENDLESS SHOOTAH"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PAUSED_UI" type="Control" parent="UI_LAYER/GAME_HUD"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("8_ugf0j")
+
+[node name="PPnl" type="Panel" parent="UI_LAYER/GAME_HUD/PAUSED_UI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PCont" type="VBoxContainer" parent="UI_LAYER/GAME_HUD/PAUSED_UI/PPnl"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.33724
+anchor_top = 0.452206
+anchor_right = 0.66276
+anchor_bottom = 0.694853
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 15
+metadata/_edit_use_anchors_ = true
+
+[node name="PRsm" type="Button" parent="UI_LAYER/GAME_HUD/PAUSED_UI/PPnl/PCont"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("11_4pv6w")
+theme_override_font_sizes/font_size = 60
+text = "RESUME"
+
+[node name="PSttngs" type="Button" parent="UI_LAYER/GAME_HUD/PAUSED_UI/PPnl/PCont"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("11_4pv6w")
+theme_override_font_sizes/font_size = 60
+text = "OPTIONS"
+
+[node name="PMainM" type="Button" parent="UI_LAYER/GAME_HUD/PAUSED_UI/PPnl/PCont"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("11_4pv6w")
+theme_override_font_sizes/font_size = 60
+text = "MAIN MENU"
+
+[node name="PLbl" type="Label" parent="UI_LAYER/GAME_HUD/PAUSED_UI"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -284.0
+offset_top = 160.0
+offset_right = 284.0
+offset_bottom = 227.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("11_dr8i3")
+theme_override_font_sizes/font_size = 50
+text = "GAME PAUSED"
+
+[node name="SETTINGS_UI" parent="UI_LAYER" instance=ExtResource("9_0ph6x")]
+unique_name_in_owner = true
+visible = false
+
+[connection signal="current_ammo_changed" from="Player" to="." method="_on_player_current_ammo_changed"]
+[connection signal="i_died" from="Player" to="." method="_on_player_i_died"]
+[connection signal="i_lost_a_life" from="Player" to="." method="_on_player_i_lost_a_life"]
 [connection signal="a_goblin_died" from="SpawnArea" to="." method="_on_spawn_area_a_goblin_died"]
 [connection signal="a_goblin_was_there" from="SpawnArea" to="Collectibles_Spawner" method="_on_spawn_area_a_goblin_was_there"]
-[connection signal="pressed" from="UI/HUD/GameOver/GameOverPanel/RestartBttn" to="." method="_on_restart_bttn_pressed"]
-[connection signal="pressed" from="UI/HUD/High/HighPanel/RestartBttn" to="." method="_on_restart_bttn_pressed"]
 [connection signal="timeout" from="WaveCD" to="." method="_on_wave_cd_timeout"]
+[connection signal="return_to_main_menu_requested" from="UI_LAYER/GAME_HUD" to="." method="_on_game_hud_return_to_main_menu_requested"]
+[connection signal="start_game_requested" from="UI_LAYER/GAME_HUD" to="." method="_on_game_hud_start_game_requested"]
+[connection signal="player_options_Mbttn" from="UI_LAYER/GAME_HUD/MAINMENU_UI" to="UI_LAYER/GAME_HUD" method="_on_mainmenu_ui_player_options_mbttn"]
+[connection signal="quit_game_Mbttn" from="UI_LAYER/GAME_HUD/MAINMENU_UI" to="UI_LAYER/GAME_HUD" method="_on_mainmenu_ui_quit_game_mbttn"]
+[connection signal="start_game_Mbttn" from="UI_LAYER/GAME_HUD/MAINMENU_UI" to="UI_LAYER/GAME_HUD" method="_on_mainmenu_ui_start_game_mbttn"]
+[connection signal="pressed" from="UI_LAYER/GAME_HUD/MAINMENU_UI/StartMenu/Start" to="UI_LAYER/GAME_HUD/MAINMENU_UI" method="_on_start_pressed"]
+[connection signal="pressed" from="UI_LAYER/GAME_HUD/MAINMENU_UI/StartMenu/Settings" to="UI_LAYER/GAME_HUD/MAINMENU_UI" method="_on_settings_pressed"]
+[connection signal="pressed" from="UI_LAYER/GAME_HUD/MAINMENU_UI/StartMenu/Quit" to="UI_LAYER/GAME_HUD/MAINMENU_UI" method="_on_quit_pressed"]
+[connection signal="mainmenu_Pbttn" from="UI_LAYER/GAME_HUD/PAUSED_UI" to="UI_LAYER/GAME_HUD" method="_on_paused_ui_mainmenu_pbttn"]
+[connection signal="player_options_Pbttn" from="UI_LAYER/GAME_HUD/PAUSED_UI" to="UI_LAYER/GAME_HUD" method="_on_paused_ui_player_options_pbttn"]
+[connection signal="resume_game_Pbttn" from="UI_LAYER/GAME_HUD/PAUSED_UI" to="UI_LAYER/GAME_HUD" method="_on_paused_ui_resume_game_pbttn"]
+[connection signal="pressed" from="UI_LAYER/GAME_HUD/PAUSED_UI/PPnl/PCont/PRsm" to="UI_LAYER/GAME_HUD/PAUSED_UI" method="_on_p_rsm_pressed"]
+[connection signal="pressed" from="UI_LAYER/GAME_HUD/PAUSED_UI/PPnl/PCont/PSttngs" to="UI_LAYER/GAME_HUD/PAUSED_UI" method="_on_p_sttngs_pressed"]
+[connection signal="pressed" from="UI_LAYER/GAME_HUD/PAUSED_UI/PPnl/PCont/PMainM" to="UI_LAYER/GAME_HUD/PAUSED_UI" method="_on_p_main_m_pressed"]
+[connection signal="settings_back_bttn" from="UI_LAYER/SETTINGS_UI" to="UI_LAYER/GAME_HUD" method="_on_settings_ui_settings_back_bttn"]

@@ -2,7 +2,10 @@ extends Node
 
 class_name StatComponent
 
-signal health_changed(current_health: float, max_health: float)
+signal health_changed(
+	current_health: float, 
+	max_health: float
+	)
 signal you_died
 
 
@@ -28,12 +31,12 @@ func modified_stats(stat_refilled: float) -> void:
 	health_changed.emit(current_health, max_health)
 
 
-func took_damage(damage: int) -> void:
+func took_damage(dmg: int) -> void:
 	current_health = clamp(
-		current_health - damage, 
+		current_health - dmg, 
 		0, max_health
 	)
-	print_debug(damage)
+	print_debug(dmg)
 	dead()
 	health_changed.emit(current_health, max_health)
 

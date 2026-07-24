@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="DataEntry" load_steps=3 format=3 uid="uid://dv8vjil7d4tok"]
+
+[ext_resource type="Resource" uid="uid://d0i6o360oh4n8" path="res://Resources/Collectibles/life_box.tres" id="1_ijskm"]
+[ext_resource type="Script" uid="uid://c571moc2g8bow" path="res://Scripts/DropSystem/DropEntry.gd" id="2_8vcve"]
+
+[resource]
+script = ExtResource("2_8vcve")
+weight = 50
+ItemData = ExtResource("1_ijskm")
+goblin_type = 0

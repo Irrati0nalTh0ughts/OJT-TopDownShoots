@@ -1,9 +1,9 @@
-[gd_scene load_steps=16 format=3 uid="uid://cchvuhtnjhcrd"]
+[gd_scene load_steps=19 format=3 uid="uid://cchvuhtnjhcrd"]
 
 [ext_resource type="Script" uid="uid://bex7l8dvwktby" path="res://Scripts/Enemies/goblin.gd" id="1_5ke0d"]
 [ext_resource type="Texture2D" uid="uid://dgt30q1c0t68h" path="res://assets/enemies/goblin/goblin_dead_anim_f0.png" id="1_y70yk"]
 [ext_resource type="Texture2D" uid="uid://dpj0bd1ba6sm8" path="res://assets/enemies/goblin/goblin_idle_anim_f0.png" id="2_5ke0d"]
-[ext_resource type="Resource" uid="uid://dn2bpqk04lscb" path="res://Resources/Drop/DropTableEntries/goblin_drop_table.tres" id="2_k80se"]
+[ext_resource type="Resource" uid="uid://dn2bpqk04lscb" path="res://Resources/Drop/DT_entries/goblin_drop_table.tres" id="2_k80se"]
 [ext_resource type="Texture2D" uid="uid://ckt2ckgx502wv" path="res://assets/enemies/goblin/goblin_idle_anim_f1.png" id="3_k80se"]
 [ext_resource type="Texture2D" uid="uid://bkhka1bymkk4f" path="res://assets/enemies/goblin/goblin_idle_anim_f2.png" id="4_geher"]
 [ext_resource type="Texture2D" uid="uid://cpapq8r7i6fv3" path="res://assets/enemies/goblin/goblin_idle_anim_f3.png" id="5_55rw5"]
@@ -75,11 +75,49 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="Animation" id="Animation_geher"]
+resource_name = "attack"
+length = 0.500025
+step = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HitboxArea/HitboxShape:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_55rw5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HitboxArea/HitboxShape:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_pj8th"]
+_data = {
+&"RESET": SubResource("Animation_55rw5"),
+&"attack": SubResource("Animation_geher")
+}
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_k80se"]
-radius = 14.5
+radius = 15.1327
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5ke0d"]
-size = Vector2(23, 34)
+size = Vector2(33, 34)
 
 [node name="Goblin" type="CharacterBody2D"]
 collision_layer = 4
@@ -95,8 +133,12 @@ animation = &"idle"
 autoplay = "idle"
 offset = Vector2(-1, -3)
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_pj8th")
+}
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-1, 0)
 shape = SubResource("CircleShape2D_k80se")
 
 [node name="StatComponent" type="Node" parent="."]
@@ -107,7 +149,9 @@ collision_layer = 0
 collision_mask = 3
 
 [node name="HitboxShape" type="CollisionShape2D" parent="HitboxArea"]
+position = Vector2(-0.5, 0)
 shape = SubResource("RectangleShape2D_5ke0d")
+disabled = true
 debug_color = Color(0.788612, 0.400596, 0.426343, 0.42)
 
 [node name="ScreenNotif" type="VisibleOnScreenNotifier2D" parent="."]
@@ -134,8 +178,9 @@ path_postprocessing = 1
 target_position = Vector2(250, 0)
 collision_mask = 3
 
-[connection signal="body_entered" from="HitboxArea" to="." method="_on_hitbox_body_entered"]
+[connection signal="body_entered" from="HitboxArea" to="." method="_on_hitbox_area_body_entered"]
 [connection signal="screen_entered" from="ScreenNotif" to="." method="_on_visible_on_screen_notifier_2d_screen_entered"]
+[connection signal="screen_exited" from="ScreenNotif" to="." method="_on_screen_notif_screen_exited"]
 [connection signal="timeout" from="Removal" to="." method="_on_removal_timeout"]
 [connection signal="timeout" from="TimerToIdle" to="." method="_on_timer_to_idle_timeout"]
 [connection signal="timeout" from="MoveTowardTimer" to="." method="_on_move_toward_timer_timeout"]

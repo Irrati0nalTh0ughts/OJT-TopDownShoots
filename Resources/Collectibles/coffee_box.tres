@@ -7,7 +7,7 @@
 script = ExtResource("1_spvag")
 collectibles_type = 1
 lifetime = 10.0
-effect_amount = 120
-effect_duration = 15.0
+effect_amount = 1.75
+effect_duration = 10.0
 texture = ExtResource("2_yccw0")
 metadata/_custom_type_script = "uid://bo565x2qknyjf"

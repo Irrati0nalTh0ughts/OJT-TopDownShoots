@@ -2,7 +2,13 @@ extends Area2D
 
 @export var data: CollectibleData
 
+var player : CharacterBody2D
+
 func _ready() -> void:
+	initialize.call_deferred()
+
+func initialize() -> void:
+	player = get_tree().get_first_node_in_group("Player") 
 	$Sprite2D.texture = data.texture
 	$DispawnTimer.wait_time = data.lifetime
 	$DispawnTimer.start()
@@ -14,19 +20,33 @@ func _on_body_entered(body: CharacterBody2D) -> void:
 
 	match data.collectibles_type:
 		CollectibleData.CollectibleType.LIFE_BOX:
-			var World_Scene = get_tree().get_first_node_in_group("World")
-			World_Scene.lives += data.effect_amount
+			player.stats_component.current_health += data.effect_amount
 			print("1 LIFE UP")
 			queue_free()
 
 		CollectibleData.CollectibleType.COFFEE_BOX:
 			print("COFFEE BOOST PICKED")
-			body.apply_coffee_buff(data.effect_amount, data.effect_duration)
+			body.buff_component.apply_coffee_buff(data.effect_amount, data.effect_duration)
 			queue_free()
 
 		CollectibleData.CollectibleType.GUNMOD_BOX:
 			print("GUN MOD PICKED")
-			body.apply_gun_buff(data.effect_amount, data.effect_duration)
+			body.buff_component.apply_gun_buff(data.effect_amount)
+			queue_free()
+		
+		CollectibleData.CollectibleType.SPECIAL_LIFE_BOX:
+			player.stats_component.current_health += data.effect_amount
+			print("1 LIFE UP")
+			queue_free()
+
+		CollectibleData.CollectibleType.SPECIAL_COFFEE_BOX:
+			print("COFFEE BOOST PICKED")
+			body.buff_component.apply_coffee_buff(data.effect_amount, data.effect_duration)
+			queue_free()
+
+		CollectibleData.CollectibleType.SPECIAL_GUNMOD_BOX:
+			print("GUN MOD PICKED")
+			body.buff_component.apply_special_gun_buff(data.effect_amount)
 			queue_free()
 
 

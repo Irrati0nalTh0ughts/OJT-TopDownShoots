@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://csevv8lgqg7yj"]
+[gd_scene load_steps=32 format=3 uid="uid://csevv8lgqg7yj"]
 
 [ext_resource type="Script" uid="uid://ls7r06ov68sc" path="res://Scripts/Player/player.gd" id="1_qr1w5"]
 [ext_resource type="PackedScene" uid="uid://cyrq3y5dfd21k" path="res://Scenes/Player/bullet.tscn" id="2_bmb2s"]
@@ -26,6 +26,9 @@
 [ext_resource type="Texture2D" uid="uid://b07obyxka7hjn" path="res://assets/player/W/player_W_0.png" id="23_0liok"]
 [ext_resource type="Texture2D" uid="uid://nc3ix8nmocmy" path="res://assets/player/W/player_W_1.png" id="24_gyc8k"]
 [ext_resource type="Texture2D" uid="uid://r1awvy0esbxc" path="res://assets/player/W/player_W_2.png" id="25_qflxp"]
+[ext_resource type="Script" uid="uid://yv1sq2ffg6cb" path="res://Scripts/Components/StatComponent.gd" id="27_bmb2s"]
+[ext_resource type="Script" uid="uid://c4hmhuyhvu6u6" path="res://Scripts/Player/player_state_machine.gd" id="28_ur3l4"]
+[ext_resource type="Script" uid="uid://bqvb8hiy2teo2" path="res://Scripts/Components/buff_component.gd" id="29_2ahak"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_0pk7v"]
 animations = [{
@@ -174,12 +177,13 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_rblve"]
-size = Vector2(18, 42)
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ythyg"]
+height = 46.0
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 z_index = 1
-collision_mask = 15
+collision_layer = 2
+collision_mask = 3
 script = ExtResource("1_qr1w5")
 bullet_scene = ExtResource("2_bmb2s")
 metadata/_edit_group_ = true
@@ -191,16 +195,26 @@ animation = &"walk4"
 autoplay = "Idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 3)
-shape = SubResource("RectangleShape2D_rblve")
+shape = SubResource("CapsuleShape2D_ythyg")
 
 [node name="FireCD" type="Timer" parent="."]
 wait_time = 0.2
 one_shot = true
 
-[node name="Coffee_Duration" type="Timer" parent="."]
+[node name="PlayerStateMachine" type="Node" parent="."]
+script = ExtResource("28_ur3l4")
 
-[node name="Gun_Duration" type="Timer" parent="."]
+[node name="StatsComponent" type="Node" parent="."]
+script = ExtResource("27_bmb2s")
 
-[connection signal="timeout" from="Coffee_Duration" to="." method="_on_coffee_duration_timeout"]
-[connection signal="timeout" from="Gun_Duration" to="." method="_on_gun_duration_timeout"]
+[node name="BuffComponent" type="Node" parent="."]
+script = ExtResource("29_2ahak")
+
+[node name="Coffee_Duration" type="Timer" parent="BuffComponent"]
+
+[node name="Gun_Duration" type="Timer" parent="BuffComponent"]
+
+[connection signal="health_changed" from="StatsComponent" to="." method="_on_stats_component_health_changed"]
+[connection signal="you_died" from="StatsComponent" to="." method="_on_stats_component_you_died"]
+[connection signal="timeout" from="BuffComponent/Coffee_Duration" to="BuffComponent" method="_on_coffee_duration_timeout"]
+[connection signal="timeout" from="BuffComponent/Gun_Duration" to="BuffComponent" method="_on_gun_duration_timeout"]
