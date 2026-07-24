@@ -5,4 +5,4 @@
 [resource]
 script = ExtResource("1_kn74q")
 weight = 160
-goblin_type = 1
+goblin_type = 0

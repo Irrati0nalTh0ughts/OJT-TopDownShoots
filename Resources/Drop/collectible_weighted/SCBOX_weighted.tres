@@ -5,6 +5,6 @@
 
 [resource]
 script = ExtResource("2_nmtl3")
-weight = 15
+weight = 10
 ItemData = ExtResource("1_vtg38")
 goblin_type = 0

@@ -9,22 +9,22 @@ signal health_changed(
 signal you_died
 
 
-@export var max_health : float
+@export var max_health : float = 999
 @export var current_health : float
 @export var movement_speed : float
 @export var damage : float
 
 # INNITIALIZING OF ENTITY STATS	
 func initialize_stats(hp: float, spd: float, dmg: float) -> void:
-	max_health = hp
-	current_health = max_health
+	current_health = hp
 	movement_speed = spd
 	damage = dmg
 
 
 func modified_stats(stat_refilled: float) -> void:
+	print("I'm it")
 	current_health = clamp(
-		current_health + (stat_refilled / 2), 
+		current_health + stat_refilled, 
 		0, max_health
 	)
 	
@@ -36,7 +36,6 @@ func took_damage(dmg: int) -> void:
 		current_health - dmg, 
 		0, max_health
 	)
-	print_debug(dmg)
 	dead()
 	health_changed.emit(current_health, max_health)
 

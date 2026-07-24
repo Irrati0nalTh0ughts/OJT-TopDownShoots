@@ -8,7 +8,8 @@ enum CollectibleType {
 	GUNMOD_BOX,
 	SPECIAL_LIFE_BOX,
 	SPECIAL_COFFEE_BOX,
-	SPECIAL_GUNMOD_BOX
+	SPECIAL_GUNMOD_BOX,
+	dummy
 }
 
 @export var collectibles_type: CollectibleType

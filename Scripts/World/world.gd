@@ -1,7 +1,7 @@
 extends Node2D
 
 @onready var ui_hud: UI_HUD = %HUD
-@onready var game_menu: CanvasLayer = %GAME_HUD
+@onready var game_menu: Control = %GAME_HUD
 
 @onready var bush: TileMapLayer = $MapLayout/Bush
 @onready var grass: TileMapLayer = $MapLayout/Grass
@@ -11,7 +11,7 @@ extends Node2D
 @export var max_spawn: int = 5
 
 var current_wave: int = 1
-var current_health: int = 0
+var known_health_amount: int = 0
 var current_ammo: int = 0
 var current_goblins: int = 0
 
@@ -28,10 +28,8 @@ var wave_state: WaveState = WaveState.SPAWNING
 func _ready() -> void:
 	bush.add_to_group("wall")
 
-
 func _on_game_hud_start_game_requested() -> void:
 	Start_Wave.call_deferred()
-
 
 func _on_game_hud_return_to_main_menu_requested() -> void:
 	get_tree().paused = false
@@ -59,15 +57,15 @@ func Update_UI() -> void:
 
 	current_goblins = get_tree().get_nodes_in_group("enemies").size()
 
-	print("has UI:", has_node("UI"))
-	print("UI node:", get_node_or_null("UI"))
+	print("has UI:", has_node("%HUD"))
+	print("UI node:", get_node_or_null("%HUD"))
 	print("ui_hud:", ui_hud)
 	ui_hud.enemy_count.text = " X " + str(current_goblins)
 	ui_hud.wave_count.text = "WAVE: " + str(current_wave)
-	ui_hud.life_count.text = " X " + str(current_health)
+	ui_hud.life_count.text = " X " + str(known_health_amount)
 	ui_hud.ammo_count.text = " X " + str(current_ammo)
 
-	if current_health > 0:
+	if known_health_amount > 0:
 		return
 
 	if current_wave >= Autoload.highest_wave:
@@ -121,24 +119,24 @@ func _on_player_current_ammo_changed(ammo: int) -> void:
 	Update_UI()
 
 
-func _on_player_i_lost_a_life(health: int, _max_health: int) -> void:
+func _on_player_health_changed(current_health: float, _max_health: float) -> void:
 	if game_state != GameState.PLAYING:
 		return
-
-	current_health = health
+	known_health_amount = current_health
 	Update_UI()
 
 
 func _on_player_i_died() -> void:
-	current_health = 0
-	Update_UI()
+	if known_health_amount <= 0:
+		Update_UI()
 
 
-func _on_ui__hc_restart_bttn() -> void:
+func _on_hud__restart_bttn() -> void:
+	print("hi")
 	_restart_run()
 
 
-func _on_ui__restart_bttn() -> void:
+func _on_hud__hc_restart_bttn() -> void:
 	_restart_run()
 
 

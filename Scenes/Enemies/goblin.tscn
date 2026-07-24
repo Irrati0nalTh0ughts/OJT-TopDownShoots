@@ -17,11 +17,17 @@
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("2_5ke0d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_k80se")
+}, {
+"duration": 1.0,
 "texture": ExtResource("1_y70yk")
 }],
-"loop": true,
+"loop": false,
 "name": &"dead",
-"speed": 5.0
+"speed": 2.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -38,7 +44,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"idle",
-"speed": 10.0
+"speed": 4.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -75,23 +81,6 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="Animation" id="Animation_geher"]
-resource_name = "attack"
-length = 0.500025
-step = 0.25
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("HitboxArea/HitboxShape:disabled")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.25),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [true, false]
-}
-
 [sub_resource type="Animation" id="Animation_55rw5"]
 length = 0.001
 tracks/0/type = "value"
@@ -107,6 +96,23 @@ tracks/0/keys = {
 "values": [true]
 }
 
+[sub_resource type="Animation" id="Animation_geher"]
+resource_name = "attack"
+length = 0.500025
+step = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HitboxArea/HitboxShape:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25, 0.500025),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, false, true]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_pj8th"]
 _data = {
 &"RESET": SubResource("Animation_55rw5"),
@@ -114,14 +120,15 @@ _data = {
 }
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_k80se"]
-radius = 15.1327
+radius = 15.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5ke0d"]
-size = Vector2(33, 34)
+size = Vector2(35, 36)
 
 [node name="Goblin" type="CharacterBody2D"]
 collision_layer = 4
 collision_mask = 3
+motion_mode = 1
 script = ExtResource("1_5ke0d")
 droptable = ExtResource("2_k80se")
 metadata/_edit_group_ = true
@@ -129,8 +136,10 @@ metadata/_edit_group_ = true
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(3, 3)
 sprite_frames = SubResource("SpriteFrames_utse8")
-animation = &"idle"
+animation = &"dead"
 autoplay = "idle"
+frame = 2
+frame_progress = 1.0
 offset = Vector2(-1, -3)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -149,6 +158,7 @@ collision_layer = 0
 collision_mask = 3
 
 [node name="HitboxShape" type="CollisionShape2D" parent="HitboxArea"]
+unique_name_in_owner = true
 position = Vector2(-0.5, 0)
 shape = SubResource("RectangleShape2D_5ke0d")
 disabled = true
@@ -172,11 +182,14 @@ one_shot = true
 one_shot = true
 
 [node name="Nav2d" type="NavigationAgent2D" parent="."]
+path_desired_distance = 30.0
+target_desired_distance = 30.0
 path_postprocessing = 1
+debug_enabled = true
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
 target_position = Vector2(250, 0)
-collision_mask = 3
+collision_mask = 2
 
 [connection signal="body_entered" from="HitboxArea" to="." method="_on_hitbox_area_body_entered"]
 [connection signal="screen_entered" from="ScreenNotif" to="." method="_on_visible_on_screen_notifier_2d_screen_entered"]

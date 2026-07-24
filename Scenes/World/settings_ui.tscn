@@ -148,18 +148,21 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(365, 64)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_gst63")
+theme_override_font_sizes/font_size = 50
 
 [node name="ResType" type="OptionButton" parent="SttngsPnl/SttngsSC/SttngsMainVBC/SttngsMainHBC/SttngsBttns"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(365, 64)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_gst63")
+theme_override_font_sizes/font_size = 50
 
 [node name="FPSType" type="OptionButton" parent="SttngsPnl/SttngsSC/SttngsMainVBC/SttngsMainHBC/SttngsBttns"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(365, 64)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_gst63")
+theme_override_font_sizes/font_size = 50
 
 [node name="VSyncCB" type="CheckBox" parent="SttngsPnl/SttngsSC/SttngsMainVBC/SttngsMainHBC/SttngsBttns"]
 unique_name_in_owner = true

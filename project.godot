@@ -19,6 +19,7 @@ config/icon="uid://txysa54jrj7j"
 
 Autoload="*res://Scripts/Autoload/autoload.gd"
 SettingsManager="*res://Scripts/Autoload/settings_manager.gd"
+SoundManager="*res://Scripts/Autoload/sound_manager.gd"
 
 [display]
 

@@ -4,5 +4,5 @@
 
 [resource]
 script = ExtResource("1_jmsca")
-weight = 40
-goblin_type = 2
+weight = 30
+goblin_type = 1

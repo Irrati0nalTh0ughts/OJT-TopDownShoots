@@ -12,4 +12,4 @@
 [resource]
 script = ExtResource("5_kkhy8")
 entry_list = Array[ExtResource("1_ev7cp")]([ExtResource("2_dcc0u"), ExtResource("3_plfck"), ExtResource("4_dcc0u"), ExtResource("5_5ghap"), ExtResource("6_i0s1f"), ExtResource("7_15x6o")])
-nothing_weight = 330
+nothing_weight = 430

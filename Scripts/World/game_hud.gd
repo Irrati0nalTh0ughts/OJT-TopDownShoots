@@ -6,6 +6,7 @@ signal return_to_main_menu_requested
 @onready var menu_control: Control = %MAINMENU_UI
 @onready var pause_control: Control = %PAUSED_UI
 @onready var settings_ui: Control = %SETTINGS_UI
+@onready var hud: UI_HUD = %HUD
 
 enum MenuState {
 	MAIN_MENU,
@@ -53,6 +54,7 @@ func _apply_state(current_state: MenuState) -> void:
 	menu_control.visible = false
 	pause_control.visible = false
 	settings_ui.visible = false
+	hud.visible = false
 
 	match current_state:
 		MenuState.MAIN_MENU:
@@ -60,6 +62,7 @@ func _apply_state(current_state: MenuState) -> void:
 			get_tree().paused = true
 
 		MenuState.PLAYING:
+			hud.visible = true
 			get_tree().paused = false
 
 		MenuState.PAUSED:
@@ -68,7 +71,6 @@ func _apply_state(current_state: MenuState) -> void:
 
 		MenuState.SETTINGS:
 			settings_ui.visible = true
-			# Pause state is inherited from whichever screen opened Settings.
 
 
 func open_settings() -> void:

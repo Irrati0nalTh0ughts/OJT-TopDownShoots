@@ -183,7 +183,8 @@ height = 46.0
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 z_index = 1
 collision_layer = 2
-collision_mask = 3
+collision_mask = 15
+motion_mode = 1
 script = ExtResource("1_qr1w5")
 bullet_scene = ExtResource("2_bmb2s")
 metadata/_edit_group_ = true
@@ -198,7 +199,7 @@ autoplay = "Idle"
 shape = SubResource("CapsuleShape2D_ythyg")
 
 [node name="FireCD" type="Timer" parent="."]
-wait_time = 0.2
+wait_time = 0.25
 one_shot = true
 
 [node name="PlayerStateMachine" type="Node" parent="."]
@@ -211,10 +212,21 @@ script = ExtResource("27_bmb2s")
 script = ExtResource("29_2ahak")
 
 [node name="Coffee_Duration" type="Timer" parent="BuffComponent"]
+unique_name_in_owner = true
 
-[node name="Gun_Duration" type="Timer" parent="BuffComponent"]
+[node name="Coffee_Duration_Sp" type="Timer" parent="BuffComponent"]
+unique_name_in_owner = true
 
+[node name="Gun_Duration_Sp" type="Timer" parent="BuffComponent"]
+unique_name_in_owner = true
+
+[node name="Lives_Duration_Sp" type="Timer" parent="BuffComponent"]
+unique_name_in_owner = true
+
+[connection signal="timeout" from="FireCD" to="." method="_on_fire_cd_timeout"]
 [connection signal="health_changed" from="StatsComponent" to="." method="_on_stats_component_health_changed"]
 [connection signal="you_died" from="StatsComponent" to="." method="_on_stats_component_you_died"]
 [connection signal="timeout" from="BuffComponent/Coffee_Duration" to="BuffComponent" method="_on_coffee_duration_timeout"]
-[connection signal="timeout" from="BuffComponent/Gun_Duration" to="BuffComponent" method="_on_gun_duration_timeout"]
+[connection signal="timeout" from="BuffComponent/Coffee_Duration_Sp" to="BuffComponent" method="_on_coffee_duration_sp_timeout"]
+[connection signal="timeout" from="BuffComponent/Gun_Duration_Sp" to="BuffComponent" method="_on_gun_duration_timeout"]
+[connection signal="timeout" from="BuffComponent/Lives_Duration_Sp" to="BuffComponent" method="_on_lives_duration_sp_timeout"]

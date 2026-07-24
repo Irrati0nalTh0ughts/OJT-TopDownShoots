@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("1_qhhkj")
 collectibles_type = 0
-lifetime = 10.0
+lifetime = 25.0
 effect_amount = 1.0
 effect_duration = 0.0
 texture = ExtResource("2_bmh7u")

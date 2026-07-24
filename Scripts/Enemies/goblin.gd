@@ -19,6 +19,7 @@ enum GoblinState { ENTERING, IDLE_WAIT, CHASING, CHARGING, DEAD }
 @onready var hitbox_area: Area2D = $HitboxArea
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var hitbox_shape: CollisionShape2D = %HitboxShape
 
 @onready var attack_cd: Timer = $AttackCD
 @onready var move_toward_timer: Timer = $MoveTowardTimer
@@ -26,6 +27,8 @@ enum GoblinState { ENTERING, IDLE_WAIT, CHASING, CHARGING, DEAD }
 @onready var removal: Timer = $Removal
 
 var direction : Vector2
+var distance : float
+var next_path_pos : Vector2
 var charge_direction : Vector2 = Vector2.ZERO
 var is_charge_on_cooldown: bool = false
 
@@ -42,9 +45,12 @@ func setup_goblin_stats() -> void:
 		attack_cd.wait_time = charge_cooldown_time
 	else:
 		stats.initialize_stats(2.0, randf_range(90.0, 150.0), 1.0)
+		raycast.enabled = false
 
 # GOBLIN STATE MACHINE
 func _physics_process(_delta: float) -> void:
+	var temp_dir : Vector2 = (player.global_position - global_position)
+	distance = temp_dir.length()
 	if state == GoblinState.DEAD:
 		return
 		
@@ -88,9 +94,13 @@ func move_to_target() -> void:
 	nav_agent.target_position = player.global_position
 	
 	if nav_agent.is_navigation_finished():
+		if (distance <= hitbox_shape.shape.size.length() and 
+			state != GoblinState.DEAD
+		):
+			animation_player.play("attack")
 		return
 		
-	var next_path_pos = nav_agent.get_next_path_position()
+	next_path_pos = nav_agent.get_next_path_position()
 	direction = (next_path_pos - global_position).normalized()
 	velocity = direction * stats.movement_speed
 
@@ -149,7 +159,7 @@ func _on_visible_on_screen_notifier_2d_screen_entered() -> void:
 func _on_screen_notif_screen_exited() -> void:
 	state = GoblinState.CHASING
 
-func _on_hitbox_area_body_entered(body: Node2D) -> void:
+func _on_hitbox_area_body_entered(body: CharacterBody2D) -> void:
 	print("fk u")
 	if state == GoblinState.DEAD:
 		return

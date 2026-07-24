@@ -1,10 +1,21 @@
-[gd_scene load_steps=14 format=3 uid="uid://cw02pmsm6dux8"]
+[gd_scene load_steps=18 format=3 uid="uid://cw02pmsm6dux8"]
 
 [ext_resource type="Script" uid="uid://bg3gb2hvibgn6" path="res://Scripts/ui_hud.gd" id="1_yboqb"]
+[ext_resource type="FontFile" uid="uid://dtcwn1y0pcsww" path="res://assets/m5x7.ttf" id="2_2seoc"]
 [ext_resource type="Shader" uid="uid://bapsni0c8gws6" path="res://Shaders/UI/HEART.gdshader" id="2_nj1lc"]
 [ext_resource type="Texture2D" uid="uid://txysa54jrj7j" path="res://assets/items/heart.png" id="3_2seoc"]
 [ext_resource type="Texture2D" uid="uid://dpj0bd1ba6sm8" path="res://assets/enemies/goblin/goblin_idle_anim_f0.png" id="4_6pjvr"]
 [ext_resource type="Texture2D" uid="uid://1uvel1xjxgi" path="res://assets/items/ammo.png" id="5_3o1uh"]
+[ext_resource type="FontFile" uid="uid://cbka2doa5ylps" path="res://assets/Daydream.ttf" id="7_2seoc"]
+[ext_resource type="Shader" uid="uid://m2n2fhlxf1uv" path="res://Shaders/UI/welcome_label.gdshader" id="8_6pjvr"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6pjvr"]
+shader = ExtResource("8_6pjvr")
+shader_parameter/glow_strength = 2.0
+shader_parameter/vignette_strength = 1.0
+shader_parameter/pulse_speed = 0.0
+shader_parameter/glow_color = Color(0.365661, 0.325617, 5.29438e-07, 1)
+shader_parameter/scanline_strength = 1.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5v1tr"]
 
@@ -16,24 +27,32 @@ shader_parameter/shine_strength = 0.35
 shader_parameter/rim_strength = 0.18
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0fj1v"]
-bg_color = Color(0.740333, 0.563464, 0.339149, 1)
+bg_color = Color(0, 0, 0, 1)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
-
-[sub_resource type="SystemFont" id="SystemFont_5v1tr"]
-font_weight = 900
-subpixel_positioning = 0
-
-[sub_resource type="FontVariation" id="FontVariation_ikia7"]
-base_font = SubResource("SystemFont_5v1tr")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7yui6"]
 bg_color = Color(0, 0, 0, 0.847059)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c5t2i"]
 bg_color = Color(0, 0, 0, 0.313726)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3o1uh"]
+shader = ExtResource("8_6pjvr")
+shader_parameter/glow_strength = 0.65
+shader_parameter/vignette_strength = 0.5
+shader_parameter/pulse_speed = 1.4
+shader_parameter/glow_color = Color(1, 0.95, 0.6, 1)
+shader_parameter/scanline_strength = 0.1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2seoc"]
+shader = ExtResource("2_nj1lc")
+shader_parameter/top_color = Color(0.74902, 0.0784314, 0.0784314, 1)
+shader_parameter/bottom_color = Color(0.827451, 0.635294, 0.368627, 1)
+shader_parameter/shine_strength = 0.35
+shader_parameter/rim_strength = 0.18
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o06y3"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -49,6 +68,7 @@ script = ExtResource("1_yboqb")
 
 [node name="PlayerUi" type="Panel" parent="."]
 unique_name_in_owner = true
+material = SubResource("ShaderMaterial_6pjvr")
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.937
@@ -69,7 +89,9 @@ anchor_right = 0.601563
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_font_sizes/font_size = 35
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_2seoc")
+theme_override_font_sizes/font_size = 45
 text = "WAVE: 0"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -77,20 +99,25 @@ vertical_alignment = 1
 [node name="LifeCount" type="Label" parent="PlayerUi"]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 50.0
-offset_right = 100.0
+offset_left = 64.0
+offset_right = 126.0
 offset_bottom = 50.0
-theme_override_font_sizes/font_size = 35
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_2seoc")
+theme_override_font_sizes/font_size = 45
 text = " X 3"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Heart" type="TextureRect" parent="PlayerUi"]
 material = SubResource("ShaderMaterial_de5vp")
-layout_mode = 0
-offset_right = 50.0
-offset_bottom = 50.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0195313
+anchor_right = 0.0846354
+anchor_bottom = 0.999999
 texture = ExtResource("3_2seoc")
+metadata/_edit_use_anchors_ = true
 
 [node name="EnemyCount" type="Label" parent="PlayerUi"]
 unique_name_in_owner = true
@@ -100,11 +127,14 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -50.0
+offset_left = -92.0
 offset_top = -50.0
+offset_right = -13.0
 grow_horizontal = 0
 grow_vertical = 0
-theme_override_font_sizes/font_size = 35
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_2seoc")
+theme_override_font_sizes/font_size = 45
 text = " X 10"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -136,7 +166,8 @@ offset_top = -50.0
 offset_right = 50.0
 offset_bottom = -1.0
 grow_horizontal = 2
-theme_override_font_sizes/font_size = 35
+theme_override_fonts/font = ExtResource("2_2seoc")
+theme_override_font_sizes/font_size = 45
 text = " X 0"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -169,18 +200,15 @@ grow_vertical = 2
 [node name="GameOverPanel" type="Panel" parent="GameOver"]
 unique_name_in_owner = true
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -175.0
-offset_top = -125.0
-offset_right = 175.0
-offset_bottom = 125.0
+anchors_preset = -1
+anchor_left = 0.238281
+anchor_top = 0.442402
+anchor_right = 0.759115
+anchor_bottom = 0.748775
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_0fj1v")
+metadata/_edit_use_anchors_ = true
 
 [node name="WaveLabel" type="Label" parent="GameOver/GameOverPanel"]
 unique_name_in_owner = true
@@ -197,13 +225,15 @@ offset_bottom = -22.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.760584, 0.193108, 0.308117, 1)
-theme_override_fonts/font = SubResource("FontVariation_ikia7")
-theme_override_font_sizes/font_size = 40
+theme_override_fonts/font = ExtResource("2_2seoc")
+theme_override_font_sizes/font_size = 100
 text = "GAMEOVER"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="RestartBttn" type="Button" parent="GameOver/GameOverPanel"]
 unique_name_in_owner = true
-process_mode = 2
+process_mode = 3
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -217,7 +247,8 @@ offset_bottom = 67.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.760784, 0.192157, 0.309804, 1)
-theme_override_font_sizes/font_size = 25
+theme_override_fonts/font = ExtResource("2_2seoc")
+theme_override_font_sizes/font_size = 35
 theme_override_styles/hover = SubResource("StyleBoxFlat_7yui6")
 theme_override_styles/normal = SubResource("StyleBoxFlat_c5t2i")
 text = "Restart Game"
@@ -233,8 +264,9 @@ offset_top = -200.0
 offset_right = 225.5
 offset_bottom = -31.0
 grow_horizontal = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 60
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("7_2seoc")
+theme_override_font_sizes/font_size = 50
 text = "HIGHEST WAVE:
 "
 horizontal_alignment = 1
@@ -243,6 +275,7 @@ vertical_alignment = 1
 [node name="HighCont" type="Panel" parent="."]
 unique_name_in_owner = true
 visible = false
+material = SubResource("ShaderMaterial_3o1uh")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -252,19 +285,17 @@ grow_vertical = 2
 
 [node name="HCHighPanel" type="Panel" parent="HighCont"]
 unique_name_in_owner = true
+material = SubResource("ShaderMaterial_2seoc")
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -175.0
-offset_top = -125.0
-offset_right = 175.0
-offset_bottom = 125.0
+anchors_preset = -1
+anchor_left = 0.239583
+anchor_top = 0.414216
+anchor_right = 0.760417
+anchor_bottom = 0.720588
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_0fj1v")
+metadata/_edit_use_anchors_ = true
 
 [node name="HCWaveLabel" type="Label" parent="HighCont/HCHighPanel"]
 unique_name_in_owner = true
@@ -281,9 +312,11 @@ offset_bottom = -22.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.992157, 0.815686, 0.0901961, 1)
-theme_override_fonts/font = SubResource("FontVariation_ikia7")
-theme_override_font_sizes/font_size = 40
-text = "GAMEOVER"
+theme_override_fonts/font = ExtResource("2_2seoc")
+theme_override_font_sizes/font_size = 100
+text = "Goob Job!"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="HCRestartBttn" type="Button" parent="HighCont/HCHighPanel"]
 unique_name_in_owner = true
@@ -301,7 +334,8 @@ offset_bottom = 67.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.992157, 0.815686, 0.0901961, 1)
-theme_override_font_sizes/font_size = 25
+theme_override_fonts/font = ExtResource("2_2seoc")
+theme_override_font_sizes/font_size = 35
 theme_override_styles/hover = SubResource("StyleBoxFlat_7yui6")
 theme_override_styles/normal = SubResource("StyleBoxFlat_c5t2i")
 text = "Restart Game"
@@ -318,6 +352,7 @@ offset_right = 225.5
 offset_bottom = -31.0
 grow_horizontal = 2
 theme_override_colors/font_color = Color(0.992157, 0.815686, 0.0901961, 1)
+theme_override_fonts/font = ExtResource("7_2seoc")
 theme_override_font_sizes/font_size = 60
 text = "HIGHEST WAVE:
 0"

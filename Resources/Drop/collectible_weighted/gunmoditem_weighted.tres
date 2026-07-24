@@ -5,6 +5,6 @@
 
 [resource]
 script = ExtResource("2_sqmp0")
-weight = 40
+weight = 50
 ItemData = ExtResource("1_jvi1q")
 goblin_type = 0

@@ -5,9 +5,9 @@ extends Area2D
 var player : CharacterBody2D
 
 func _ready() -> void:
-	initialize.call_deferred()
+	initialize.call_deferred(data)
 
-func initialize() -> void:
+func initialize(data: CollectibleData) -> void:
 	player = get_tree().get_first_node_in_group("Player") 
 	$Sprite2D.texture = data.texture
 	$DispawnTimer.wait_time = data.lifetime
@@ -20,7 +20,7 @@ func _on_body_entered(body: CharacterBody2D) -> void:
 
 	match data.collectibles_type:
 		CollectibleData.CollectibleType.LIFE_BOX:
-			player.stats_component.current_health += data.effect_amount
+			body.buff_component.apply_life_buff(data.effect_amount)
 			print("1 LIFE UP")
 			queue_free()
 
@@ -35,18 +35,18 @@ func _on_body_entered(body: CharacterBody2D) -> void:
 			queue_free()
 		
 		CollectibleData.CollectibleType.SPECIAL_LIFE_BOX:
-			player.stats_component.current_health += data.effect_amount
+			body.buff_component.apply_special_life_buff(data.effect_amount, data.effect_duration)
 			print("1 LIFE UP")
 			queue_free()
 
 		CollectibleData.CollectibleType.SPECIAL_COFFEE_BOX:
 			print("COFFEE BOOST PICKED")
-			body.buff_component.apply_coffee_buff(data.effect_amount, data.effect_duration)
+			body.buff_component.apply_special_coffee_buff(data.effect_amount, data.effect_duration)
 			queue_free()
 
 		CollectibleData.CollectibleType.SPECIAL_GUNMOD_BOX:
 			print("GUN MOD PICKED")
-			body.buff_component.apply_special_gun_buff(data.effect_amount)
+			body.buff_component.apply_special_gun_buff(data.effect_duration)
 			queue_free()
 
 

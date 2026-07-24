@@ -1,8 +1,8 @@
 extends CharacterBody2D
 
 signal current_ammo_changed(ammo: int)
+signal health_changed(current_health: float, max_health: float)
 signal i_died
-signal i_lost_a_life
 
 @export var bullet_scene : PackedScene
 @export var respawn_delay: float = 1.0
@@ -12,9 +12,10 @@ signal i_lost_a_life
 
 @onready var state_machine: PlayerStateMachine = $PlayerStateMachine
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
+@onready var fire_cd: Timer = $FireCD
 @onready var player: CharacterBody2D = $"."
 
-var current_ammo: int
+var current_ammo: int = 15
 var base_speed: float = 250.0
 var screen_size : Vector2
 
@@ -26,12 +27,10 @@ func _ready() -> void:
 
 	stats.initialize_stats(10.0, base_speed, 1.0)
 	current_ammo_changed.emit(current_ammo)
-	i_lost_a_life.emit(stats.current_health)
+	health_changed.emit(stats.current_health, stats.max_health)
 
 
 func took_a_hit(damage: int) -> void:
-	print("player got hit")
-
 	if state_machine.current_state == PlayerStateMachine.State.DEAD:
 		return
 
@@ -58,6 +57,7 @@ func fire() -> void:
 
 	if buff_component.special_gun_buff_active:
 		if Input.is_action_pressed("lmb"):
+			fire_cd.start()
 			spawn_bullet(base_direction)
 			spawn_bullet(base_direction.rotated(-PI / 4))
 			spawn_bullet(base_direction.rotated(PI / 4))
@@ -100,8 +100,12 @@ func update_facing_animation() -> void:
 
 
 func _on_stats_component_health_changed(current_health: float, max_health: float) -> void:
-	i_lost_a_life.emit(current_health, max_health)
+	health_changed.emit(current_health, max_health)
 
 
 func _on_stats_component_you_died() -> void:
 	i_died.emit()
+
+
+func _on_fire_cd_timeout() -> void:
+	pass # Replace with function body.
